@@ -1,0 +1,64 @@
+body {
+  /* FIXME: Just for development */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+:root {
+  --task-border: 1.5px solid #999;
+}
+
+.task {
+  border: var(--task-border);
+  display: flex;
+  flex-direction: column;
+  width: 50ch;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.task input,
+.task-text {
+  box-sizing: border-box;
+  outline: 0;
+  border: 0;
+}
+
+.task-header {
+  border-bottom: var(--task-border);
+}
+
+.task-header input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+.task-content {
+  display: inherit;
+  align-items: center;
+  height: fit-content;
+}
+
+.task-text {
+  display: inline-block;
+  padding: 1rem;
+  min-height: 5rem;
+  width: 100%;
+}
+
+.task-footer {
+  border-top: var(--task-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.task-date {
+  text-align: right;
+}
+
+.btn {
+  border: 0;
+}
