@@ -7,58 +7,88 @@ body {
 }
 
 :root {
-  --task-border: 1.5px solid #999;
+  --task-border: 1.5px solid #666;
 }
 
 .task {
+  background: #ebebeb;
   border: var(--task-border);
   display: flex;
   flex-direction: column;
   width: 50ch;
   border-radius: 10px;
-  overflow: hidden;
-}
-
-.task input,
-.task-text {
-  box-sizing: border-box;
-  outline: 0;
-  border: 0;
 }
 
 .task-header {
-  border-bottom: var(--task-border);
-}
-
-.task-header input {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.5rem;
+  display: flex;
 }
 
 .task-content {
-  display: inherit;
-  align-items: center;
-  height: fit-content;
-}
-
-.task-text {
-  display: inline-block;
-  padding: 1rem;
-  min-height: 5rem;
-  width: 100%;
-}
-
-.task-footer {
-  border-top: var(--task-border);
   display: flex;
   flex-direction: column;
 }
 
+.task-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 -1px 5px rgb(0 0 0 / 35%);
+}
+
+.task-title,
+.task-text {
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 0.8rem;
+  outline: 0;
+  border: 0;
+}
+
+.task-title {
+  width: 100%;
+  /* word-wrap: normal; */
+  font-size: 1.35rem;
+}
+
+.task-text {
+  padding-top: 0.5rem;
+  min-height: 5rem;
+  width: 100%;
+}
+
 .task-date {
   text-align: right;
+  font-size: 0.8rem;
+  padding: 0.5rem;
+}
+
+.muted {
+  color: #777;
 }
 
 .btn {
   border: 0;
+  border-radius: 5px;
+  background-color: rgb(212, 212, 212);
+  padding: 0.5rem;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: rgb(190, 190, 190);
+}
+
+i.fa-times-circle {
+  margin: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.separator {
+  background-color: rgb(212, 212, 212);
+  border: 0;
+  margin: 0 0.5rem;
+  box-sizing: border-box;
+  height: 1px;
+  width: auto;
 }
