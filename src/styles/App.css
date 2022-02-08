@@ -1,0 +1,49 @@
+:root {
+  --task-background-color: rgb(246, 246, 246);
+  --task-muted-color: #999;
+  --task-shadow-color: rgb(0 0 0 / 50%);
+  --task-button-color-hover: rgb(0 0 0 / 10%);
+  --task-button-color-active: rgb(0 0 0 / 20%);
+  --task-border: 1.5px solid #444;
+  --task-fade-transition: 0.5s;
+  --btn-color-blue: rgb(31, 143, 255);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes backgroundFadeOutHeight {
+  0% {
+    height: 100vh;
+  }
+
+  100% {
+    height: 100vh;
+  }
+}
+
+main.container {
+  margin-top: 1rem;
+}
+
+.separator {
+  background-color: rgb(0 0 0 / 20%);
+  border: 0;
+  margin: 1rem 0.5rem;
+  height: 1px;
+}
+
+.muted {
+  color: var(--task-muted-color);
+}
+
+.rotated {
+  transform: rotate(90deg);
+}

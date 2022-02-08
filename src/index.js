@@ -1,13 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import App from "./App";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
 
 import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/tasks"
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/" element={<Navigate to="/tasks" />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

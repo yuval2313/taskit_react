@@ -1,94 +1,96 @@
-body {
-  /* FIXME: Just for development */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-:root {
-  --task-border: 1.5px solid #666;
-}
-
 .task {
-  background: #ebebeb;
-  border: var(--task-border);
+  color: aliceblue;
+  position: relative;
   display: flex;
   flex-direction: column;
-  width: 50ch;
   border-radius: 10px;
+  width: 30ch;
+  background: #1d83ff;
+  background: linear-gradient(135deg, #1d83ff 0%, #00a2ff 100%);
+  box-shadow: 0 0 1rem 2px rgb(0 0 0 / 35%);
 }
 
-.task-header {
-  display: flex;
+.task.selected {
+  animation: fadeIn 1s;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 100%;
+  max-width: 60ch;
 }
 
-.task-content {
-  display: flex;
-  flex-direction: column;
+.task.selected .task-main {
+  max-height: 70vh;
+  overflow: hidden;
 }
+
+.task.selected .task-title,
+.task.selected .task-content {
+  height: unset;
+}
+
+/* .task-topbar {
+  display: flex;
+  justify-content: right;
+  border-bottom: 1px solid var(--task-shadow-color);
+  box-shadow: 0 2px 5px -1.5px var(--task-shadow-color);
+} */
 
 .task-footer {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  box-shadow: 0 -1px 5px rgb(0 0 0 / 35%);
-}
-
-.task-title,
-.task-text {
-  box-sizing: border-box;
-  display: inline-block;
-  padding: 0.8rem;
-  outline: 0;
-  border: 0;
+  border-top: 1px solid var(--task-shadow-color);
+  box-shadow: 0 -2px 5px -1.5px var(--task-shadow-color);
 }
 
 .task-title {
-  width: 100%;
-  /* word-wrap: normal; */
+  padding: 0.7rem 1rem 0;
   font-size: 1.35rem;
+  font-weight: 600;
+  height: 2.5rem;
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
-.task-text {
-  padding-top: 0.5rem;
-  min-height: 5rem;
-  width: 100%;
+.task-content {
+  padding: 0 1rem 0.5rem;
+  height: 17rem;
+  overflow: auto;
+}
+
+.task-content,
+.task-title {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 .task-date {
   text-align: right;
   font-size: 0.8rem;
-  padding: 0.5rem;
+  margin: 0 1rem 0.5rem;
 }
 
-.muted {
-  color: #777;
+.float-right {
+  float: right;
 }
 
-.btn {
-  border: 0;
-  border-radius: 5px;
-  background-color: rgb(212, 212, 212);
-  padding: 0.5rem;
+.float-right::after {
+  display: block;
+  content: "";
+  clear: both;
 }
 
-.btn:hover,
-.btn:focus {
-  background-color: rgb(190, 190, 190);
-}
-
-i.fa-times-circle {
-  margin: 0.5rem;
-  font-size: 1.2rem;
-}
-
-.separator {
-  background-color: rgb(212, 212, 212);
-  border: 0;
-  margin: 0 0.5rem;
-  box-sizing: border-box;
-  height: 1px;
-  width: auto;
+@media screen and (max-width: 650px) {
+  .task {
+    width: 100%;
+    max-width: 45ch;
+  }
 }

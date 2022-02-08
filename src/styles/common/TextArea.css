@@ -1,0 +1,14 @@
+textarea {
+  color: inherit;
+  display: block;
+  background: inherit;
+  width: 100%;
+  resize: none;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+}
+
+.highlighted {
+  background: rgba(0, 255, 191, 0.3);
+}

@@ -1,0 +1,73 @@
+.btn {
+  color: inherit;
+  cursor: pointer;
+  background: rgb(0 0 0 / 0);
+  border: 0;
+  border-radius: 5px;
+  padding: 0.4rem 1rem 0.5rem;
+  transition: 0.15s;
+}
+
+.btn:hover,
+.btn:focus {
+  outline: 0;
+  background-color: var(--task-button-color-hover);
+}
+
+.btn:active {
+  background: var(--task-button-color-active);
+}
+
+.btn:disabled {
+  opacity: 0.85;
+}
+
+.btn:disabled:hover {
+  background: initial;
+  cursor: initial;
+}
+
+.btn-blue:disabled:hover {
+  background: var(--btn-color-blue);
+  cursor: initial;
+}
+
+.btn-bg {
+  font-size: 1.2rem;
+}
+
+.btn-circle {
+  border-radius: 100%;
+  box-sizing: content-box;
+  padding: 0.3rem;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.btn-circle-sm {
+  padding: 0;
+}
+
+.btn-3d {
+  box-shadow: 1px 1px 3px 1px black;
+}
+
+.btn-3d:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 1px 1px black;
+  background: var(--task-button-color-active);
+}
+
+.btn-blue {
+  background: var(--btn-color-blue);
+  color: #fff;
+}
+
+.btn-blue:hover,
+.btn-blue:focus {
+  background: rgb(0, 110, 255);
+}
+
+.btn-blue:active {
+  background: rgb(0, 90, 255);
+}

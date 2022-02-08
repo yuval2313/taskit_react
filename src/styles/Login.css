@@ -1,0 +1,42 @@
+.login-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 1.2rem;
+  background: #f5f5f5;
+  box-shadow: 0 0 30px 3px #555;
+  border: 1px solid #777;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 3rem;
+  width: 100vw;
+  height: 100vh;
+}
+
+.login-form {
+  text-align: center;
+}
+
+.login-form h1 {
+  margin: 0 0 3rem;
+}
+
+.login-form .btn {
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 30px;
+  margin-top: 1rem;
+}
+
+@media screen and (min-width: 550px) {
+  .login-container {
+    padding: 4rem;
+    width: 550px;
+    height: initial;
+  }
+}
