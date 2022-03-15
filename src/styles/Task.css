@@ -1,17 +1,25 @@
 .task {
-  color: aliceblue;
+  color: #fff;
   position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   width: 30ch;
-  background: #1d83ff;
-  background: linear-gradient(135deg, #1d83ff 0%, #00a2ff 100%);
-  box-shadow: 0 0 1rem 2px rgb(0 0 0 / 35%);
+  background: var(--background-color-main);
+  background: linear-gradient(
+    135deg,
+    var(--background-color-main) 0%,
+    var(--background-color-secondary) 100%
+  );
+  box-shadow: 0 0 1rem 2px var(--shadow-color);
+  transition: width 0.2s;
+}
+
+.task.expanding {
+  animation: fadeIn 1s;
 }
 
 .task.selected {
-  animation: fadeIn 1s;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -21,31 +29,22 @@
   max-width: 60ch;
 }
 
+.task-main {
+  padding: 0.25rem;
+}
+
 .task.selected .task-main {
-  max-height: 70vh;
-  overflow: hidden;
+  max-height: 80vh;
+  overflow: auto;
 }
 
-.task.selected .task-title,
-.task.selected .task-content {
-  height: unset;
+.task-main::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* .task-topbar {
-  display: flex;
-  justify-content: right;
-  border-bottom: 1px solid var(--task-shadow-color);
-  box-shadow: 0 2px 5px -1.5px var(--task-shadow-color);
-} */
-
-.task-footer {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 1rem;
-  border-top: 1px solid var(--task-shadow-color);
-  box-shadow: 0 -2px 5px -1.5px var(--task-shadow-color);
+.task.selected .task-content,
+.task.selected .task-title {
+  height: initial;
 }
 
 .task-title {
@@ -53,32 +52,56 @@
   font-size: 1.35rem;
   font-weight: 600;
   height: 2.5rem;
+
+  -webkit-line-clamp: 1;
+}
+
+.task-content,
+.task-title {
   overflow: hidden;
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
 
 .task-content {
   padding: 0 1rem 0.5rem;
   height: 17rem;
-  overflow: auto;
+
+  -webkit-line-clamp: 13;
 }
 
-.task-content,
-.task-title {
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
+.task-info {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  margin: 0.5rem;
+  font-size: 0.8rem;
 }
 
 .task-date {
-  text-align: right;
-  font-size: 0.8rem;
-  margin: 0 1rem 0.5rem;
+  padding-top: 0.7em;
+}
+
+.task-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--shadow-color);
+  box-shadow: 0 -2px 5px -1.5px var(--shadow-color);
+}
+
+.footer-toolbar {
+  font-size: 1.2rem;
+  display: flex;
 }
 
 .float-right {
+  padding: 0;
   float: right;
 }
 

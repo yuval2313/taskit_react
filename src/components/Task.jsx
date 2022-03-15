@@ -1,18 +1,22 @@
 import React, { useEffect, useContext } from "react";
 
-import TextArea from "./common/TextArea";
+import TaskTextarea from "./TaskTextarea";
 import Button from "./common/Button";
+import Status from "./Status";
 
-import { faTimes, faExpandAlt } from "@fortawesome/free-solid-svg-icons";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { padTo2Digits, isToday, isYear } from "../utilities/dateUtils";
+
+import { faTimes, faCompress } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
 import TasksContext from "../context/TasksContext";
 
 import "../styles/Task.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 
-function Task({ task, selected, onExpand, onExit, onSave }) {
-  const { tasks, setTasks, searchQuery } = useContext(TasksContext);
+function Task({ task, selected }) {
+  const { tasks, setTasks, expanding, onExit, onSave, onDelete, onSelect } =
+    useContext(TasksContext);
 
   useEffect(() => {});
 
@@ -27,8 +31,9 @@ function Task({ task, selected, onExpand, onExit, onSave }) {
     setTasks(tasksClone);
   }
 
-  //FIXME: REFACTOR
   function getEdited() {
+    let edited = "Edited: ";
+
     const { updatedAt } = task;
     if (!updatedAt) return null;
 
@@ -40,93 +45,88 @@ function Task({ task, selected, onExpand, onExit, onSave }) {
     const hours = padTo2Digits(date.getHours());
     const minutes = padTo2Digits(date.getMinutes());
 
-    if (isToday(date)) return `${hours}:${minutes}`;
-    if (isYear(date)) return `${day}/${month}`;
-    return `${day}/${month}/${year}`;
+    if (isToday(date)) return (edited += `${hours}:${minutes}`);
+    if (isYear(date)) return (edited += `${day}/${month}`);
+    return (edited += `${day}/${month}/${year}`);
   }
 
-  function padTo2Digits(num) {
-    return num.toString().padStart(2, "0");
-  }
-
-  function isYear(date) {
-    const today = new Date();
-    return date.getFullYear() === today.getFullYear();
-  }
-
-  function isToday(date) {
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
-  }
-
-  function focusContent(e) {
-    e.preventDefault();
-    const parentTask = e.currentTarget.offsetParent;
-    const content = parentTask.querySelector("#content");
-    content.focus();
-  }
+  // function focusContent(e) {
+  //   e.preventDefault();
+  //   const parentTask = e.currentTarget.offsetParent;
+  //   const content = parentTask.querySelector("#content");
+  //   content.focus();
+  // }
 
   return (
     <article
-      className={`task ${selected ? "selected" : ""}`}
-      onClick={selected ? null : () => onExpand(task._id)}
+      className={`task ${selected ? "selected" : ""} ${
+        selected && expanding ? "expanding" : ""
+      }`}
+      onClick={selected ? null : () => onSelect(task._id)}
     >
-      {/* <div className="task-topbar">
-        {selected ? (
-          <Button onClick={onExit} className="btn-circle-sm" icon={faTimes} />
-        ) : (
-          <Button
-            onClick={() => onExpand(task._id)}
-            className="btn-circle-sm rotated"
-            icon={faExpandAlt}
-          />
-        )}
-      </div> */}
       <div className="task-main">
-        {!selected ? (
+        {selected ? (
           <Button
             onClick={onExit}
-            className="btn-circle-sm float-right"
+            className="btn-clear float-right"
+            icon={faCompress}
+          />
+        ) : (
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              return onDelete(task);
+            }}
+            className="btn-clear float-right"
             icon={faTimes}
           />
-        ) : null}
-        <TextArea
-          name="title"
-          selected={selected}
-          value={task.title}
-          placeholder="Title"
-          onChange={handleChange}
-          // onKeyPress={(e) => {
-          //   if (e.key === "Enter") focusContent(e);
-          // }}
-          maxLength={100}
-        />
+        )}
+        <div className="task-title">
+          <TaskTextarea
+            name="title"
+            selected={selected}
+            value={task.title}
+            placeholder="Title"
+            onChange={handleChange}
+            maxLength={100}
+          />
+        </div>
         <hr className="separator" />
-        <TextArea
-          name={"content"}
-          selected={selected}
-          value={task.content}
-          onChange={handleChange}
-          maxLength={500}
-          minRows={15}
-          maxRows={20}
-        />
+        <div className="task-content">
+          <TaskTextarea
+            name={"content"}
+            selected={selected}
+            value={task.content}
+            placeholder="Empty..."
+            onChange={handleChange}
+            maxLength={500}
+            minRows={15}
+          />
+        </div>
       </div>
-      <div className="task-date">Edited: {getEdited()}</div>
-      {selected ? (
+      <div className="task-info">
+        <div className="task-status">
+          <Status task={task} onChange={handleChange} />
+        </div>
+        <span className="task-date">{getEdited()}</span>
+      </div>
+      {selected && (
         <div className="task-footer">
-          <Button className="btn-bg" icon={faBell} />
+          <div className="footer-toolbar">
+            <Button className="btn-clear" icon={faBell} />
+            <Button
+              className="btn-clear"
+              icon={faTrashAlt}
+              onClick={() => onDelete(task)}
+            />
+          </div>
           <Button
             className="btn btn-3d"
             onClick={() => onSave(task)}
             label={"Save"}
           />
         </div>
-      ) : null}
+      )}
     </article>
   );
 }

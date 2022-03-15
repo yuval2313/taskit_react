@@ -3,10 +3,9 @@ ul {
   margin: 0;
 }
 
-li {
+.grid-item {
   display: flex;
   justify-content: center;
-  list-style-type: none;
 }
 
 .background {
@@ -43,13 +42,29 @@ li {
 }
 
 .tasks-head {
+  margin: auto;
+  max-width: 600px;
+}
+
+.tasks-search {
   display: flex;
   align-items: center;
 }
 
-.tasks-head .form-group {
+.tasks-search .form-group {
   flex-basis: 100%;
   margin-right: 1rem;
+}
+
+.tasks-search .btn {
+  flex-shrink: 0;
+  font-size: 2.5rem;
+  padding: 1.1rem;
+}
+
+.tasks-order {
+  display: flex;
+  font-size: 0.8rem;
 }
 
 .tasks-grid-container {

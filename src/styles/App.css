@@ -1,12 +1,23 @@
 :root {
-  --task-background-color: rgb(246, 246, 246);
-  --task-muted-color: #999;
-  --task-shadow-color: rgb(0 0 0 / 50%);
-  --task-button-color-hover: rgb(0 0 0 / 10%);
-  --task-button-color-active: rgb(0 0 0 / 20%);
+  --shadow-color: rgb(0 0 0 / 35%);
+  --background-color-main: #1d83ff;
+  --background-color-secondary: #00a2ff;
+  --background-color-gradient: linear-gradient(135deg, #1d83ff 0%, #00a2ff 50%);
   --task-border: 1.5px solid #444;
   --task-fade-transition: 0.5s;
   --btn-color-blue: rgb(31, 143, 255);
+  --pill-border-radius: 2.5em;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(0 0 0 / 25%);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0 0 0 / 0);
 }
 
 @keyframes fadeIn {
@@ -19,6 +30,7 @@
   }
 }
 
+/* Fix / hack for fading out background before it disappears */
 @keyframes backgroundFadeOutHeight {
   0% {
     height: 100vh;
@@ -41,9 +53,5 @@ main.container {
 }
 
 .muted {
-  color: var(--task-muted-color);
-}
-
-.rotated {
-  transform: rotate(90deg);
+  color: var(--shadow-color);
 }

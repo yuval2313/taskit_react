@@ -1,8 +1,13 @@
+:root {
+  --nav-height: 4rem;
+}
+
 .nav {
-  background: #1d83ff;
-  background: linear-gradient(135deg, #1d83ff 0%, #00a2ff 50%);
-  height: 4rem;
-  box-shadow: 0 2px 4px var(--task-shadow-color);
+  background-color: var(--background-color-main);
+  background: var(--background-color-gradient);
+  height: var(--nav-height);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  color: #fff;
 }
 
 .nav-container {
@@ -19,22 +24,31 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #fff;
   font-size: 1.8rem;
   font-weight: 700;
   text-shadow: 0 0 2px #fff;
 }
 
 .nav-item {
-  color: #fff;
+  position: relative;
+  font-size: 1.5rem;
+}
+
+.nav-item .btn {
+  transition: transform 0.65s;
+}
+
+.spin {
+  transform: rotate(-180deg);
 }
 
 a {
   text-decoration: none;
+  color: unset;
 }
 
 @media screen and (min-width: 750px) {
-  .nav {
-    height: 4.5rem;
+  :root {
+    --nav-height: 4.5rem;
   }
 }

@@ -1,0 +1,39 @@
+.sort-tasks {
+  display: flex;
+  align-items: center;
+  background: var(--background-color-gradient);
+  border-radius: var(--pill-border-radius);
+  padding: 0.1rem;
+}
+
+.sort-tasks .btn {
+  border-radius: 0;
+}
+
+.sort-tasks .sort-order {
+  border-right: 1px solid rgb(0 0 0 / 10%);
+  border-top-left-radius: var(--pill-border-radius);
+  border-bottom-left-radius: var(--pill-border-radius);
+}
+.sort-tasks .sort-by {
+  padding: 0.5rem;
+  border-top-right-radius: var(--pill-border-radius);
+  border-bottom-right-radius: var(--pill-border-radius);
+}
+
+.sort-tasks .dropdown-menu {
+  background: var(--background-color-gradient);
+  box-shadow: 0 1px 5px 1px rgb(0 0 0 / 50%);
+  color: #fff;
+  top: 2.3rem;
+  left: 0rem;
+  right: 0.5rem;
+  min-width: 80px;
+  /* max-width: 100px; */
+}
+
+.sort-tasks .menu-item {
+  /* background: rgb(0 0 0 / 0); */
+  justify-content: center;
+  border-color: rgb(0 0 0 / 50%);
+}

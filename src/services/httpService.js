@@ -11,7 +11,7 @@ axios.interceptors.response.use(null, (error) => {
   if (!expectedError) {
     //FIXME: Use logging service (such as Sentry)
     console.log(error);
-    //FIXME: Use better notifications
+    //FIXME: Use better notifications (such as toast npm)
     alert("An unexpected error has occured :(");
   }
 

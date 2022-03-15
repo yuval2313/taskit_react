@@ -9,6 +9,11 @@ textarea {
   font-weight: inherit;
 }
 
+textarea::placeholder {
+  color: var(--shadow-color);
+  opacity: 1;
+}
+
 .highlighted {
-  background: rgba(0, 255, 191, 0.3);
+  background: rgba(230, 0, 192, 0.719);
 }

@@ -1,31 +1,40 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
-
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+
+import { getCurrentUser } from "./services/authService";
+import UserContext from "./context/UserContext";
+
 import App from "./App";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/common/ProtectedRoute";
+import Register from "./components/Register";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import NotFound from "./components/NotFound";
 
 import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/tasks"
-          element={
-            <ProtectedRoute>
-              <App />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/" element={<Navigate to="/tasks" />} />
-      </Routes>
+      <UserContext.Provider value={getCurrentUser()}>
+        <Routes>
+          <Route
+            path="/tasks"
+            element={
+              <ProtectedRoute>
+                <App />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/" element={<Navigate to="/tasks" />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </UserContext.Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

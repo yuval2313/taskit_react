@@ -4,13 +4,47 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "../../styles/common/Button.css";
 
-function Button({ label, icon, className, ...rest }) {
+function Button({
+  children,
+  label,
+  icon,
+  leftIcon,
+  rightIcon,
+  className,
+  ...rest
+}) {
+  function renderIconButton() {
+    return (
+      <span className={"btn-icon"}>
+        <FontAwesomeIcon icon={icon} />
+      </span>
+    );
+  }
+
+  function renderLabeledButton() {
+    return (
+      <span>
+        {leftIcon && (
+          <span className={"btn-icon-left"}>
+            <FontAwesomeIcon icon={leftIcon} />
+          </span>
+        )}
+        {children || label}
+        {rightIcon && (
+          <span className={"btn-icon-right"}>
+            <FontAwesomeIcon icon={rightIcon} />
+          </span>
+        )}
+      </span>
+    );
+  }
+
   return (
     <button
-      className={icon ? `btn btn-circle ${className}` : className}
+      className={icon ? `btn btn-circle ${className}` : `btn ${className}`}
       {...rest}
     >
-      {icon ? <FontAwesomeIcon className="btn-icon" icon={icon} /> : label}
+      {icon ? renderIconButton() : renderLabeledButton()}
     </button>
   );
 }

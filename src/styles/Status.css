@@ -1,0 +1,38 @@
+.status-bar {
+  position: relative;
+}
+
+.status-bar .btn {
+  background: rgb(14, 117, 214);
+  border: 1px solid rgb(0 0 0 / 20%);
+  opacity: 0.9;
+}
+
+.status-bar .dropdown-menu {
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgb(14, 117, 214);
+  width: 90px;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 5px 1px rgb(0 0 0 / 50%);
+}
+
+.status-bar .menu-item {
+  justify-content: center;
+  color: #fff;
+  border-color: rgb(0 0 0 / 50%);
+}
+
+.status-bar .todo {
+  background: rgb(109, 76, 185);
+}
+
+.status-bar .doing {
+  background: rgb(28, 131, 149);
+}
+
+.status-bar .complete {
+  background: rgb(33, 121, 84);
+}

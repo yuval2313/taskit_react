@@ -1,0 +1,35 @@
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  z-index: 1;
+  animation: fadeIn 0.15s ease-in;
+  background: rgb(240, 240, 240);
+  color: #666;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 1px #777;
+}
+
+.menu-item {
+  background: inherit;
+  display: flex;
+  transition: filter 0.2s;
+  padding: 1em 0.8em;
+  border-bottom: 1px solid #777;
+}
+
+.menu-item:hover,
+.menu-item:focus {
+  filter: brightness(0.85);
+  cursor: pointer;
+}
+
+.menu-item:last-child {
+  border-bottom: 0;
+}
+
+.icon {
+  width: 30px;
+}
