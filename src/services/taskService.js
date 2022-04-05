@@ -29,10 +29,12 @@ export function saveTask(task) {
 }
 
 export function mapToBody(task) {
-  const { title, content, status } = task;
+  const { title, content, status, priority, labels } = task;
   return {
     title,
     content,
     status,
+    priority,
+    labelIds: labels.map((label) => label._id),
   };
 }

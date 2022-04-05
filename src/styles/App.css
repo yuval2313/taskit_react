@@ -1,11 +1,39 @@
 :root {
-  --shadow-color: rgb(0 0 0 / 35%);
-  --background-color-main: #1d83ff;
-  --background-color-secondary: #00a2ff;
-  --background-color-gradient: linear-gradient(135deg, #1d83ff 0%, #00a2ff 50%);
-  --task-border: 1.5px solid #444;
-  --task-fade-transition: 0.5s;
-  --btn-color-blue: rgb(31, 143, 255);
+  --background-main: #faeec6;
+  --background-main-webkit-gradient: -webkit-linear-gradient(
+    135deg,
+    #ffffff,
+    #faeec6
+  );
+  --background-main-gradient: linear-gradient(135deg, #f0f0f0, #faeec6);
+  --background-blue: #1d83ff;
+  --background-blue-webkit-gradient: -webkit-linear-gradient(
+    135deg,
+    #1d83ff 10%,
+    #00c3ff 70%
+  );
+  --background-blue-gradient: linear-gradient(135deg, #1d83ff 10%, #00c3ff 70%);
+  --background-red: #d61212;
+  --background-red-webkit-gradient: -webkit-linear-gradient(
+    135deg,
+    #d61212 10%,
+    #e42d15
+  );
+  --background-red-gradient: linear-gradient(135deg, #d61212 10%, #e42d15);
+  --background-purple: #a514be;
+  --background-purple-webkit-gradient: -webkit-linear-gradient(
+    135deg,
+    #a514be 10%,
+    #db1e83
+  );
+  --background-purple-gradient: linear-gradient(135deg, #a514be 10%, #db1e83);
+  --background-green: #0aad77;
+  --background-green-webkit-gradient: -webkit-linear-gradient(
+    135deg,
+    #0aad77 10%,
+    #40ce4b
+  );
+  --background-green-gradient: linear-gradient(135deg, #0aad77 10%, #40ce4b);
   --pill-border-radius: 2.5em;
 }
 
@@ -30,21 +58,6 @@
   }
 }
 
-/* Fix / hack for fading out background before it disappears */
-@keyframes backgroundFadeOutHeight {
-  0% {
-    height: 100vh;
-  }
-
-  100% {
-    height: 100vh;
-  }
-}
-
-main.container {
-  margin-top: 1rem;
-}
-
 .separator {
   background-color: rgb(0 0 0 / 20%);
   border: 0;
@@ -53,5 +66,5 @@ main.container {
 }
 
 .muted {
-  color: var(--shadow-color);
+  color: rgb(0 0 0 / 35%);
 }

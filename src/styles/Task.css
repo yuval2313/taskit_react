@@ -1,36 +1,83 @@
 .task {
-  color: #fff;
   position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  width: 30ch;
-  background: var(--background-color-main);
-  background: linear-gradient(
-    135deg,
-    var(--background-color-main) 0%,
-    var(--background-color-secondary) 100%
-  );
-  box-shadow: 0 0 1rem 2px var(--shadow-color);
+  width: 35ch;
+  background: var(--background-main);
+  background: var(--background-main-webkit-gradient);
+  background: var(--background-main-gradient);
+  color: #777;
+  box-shadow: 0 0 1rem 2px rgb(0 0 0 / 35%);
   transition: width 0.2s;
 }
 
-.task.expanding {
-  animation: fadeIn 1s;
-}
-
 .task.selected {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
   width: 100%;
   max-width: 60ch;
 }
 
+.task-transition-enter {
+  opacity: 0;
+  transform: translateY(-10%);
+}
+.task-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.3s ease-in;
+}
+
+.task-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.task-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-10%);
+  transition: all 0.3s ease-out;
+}
+
+.task-selected-transition-enter {
+  position: fixed;
+  opacity: 0;
+}
+.task-selected-transition-enter-active {
+  opacity: 0;
+  transform: translate(0, -50%);
+  transition: all 0.3s ease;
+}
+.task-selected-transition-enter-done {
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.task-selected-transition-exit {
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  opacity: 1;
+}
+.task-selected-transition-exit-active {
+  opacity: 0;
+  transform: translate(-50%, 0);
+  transition: all 0.3s ease;
+}
+
 .task-main {
   padding: 0.25rem;
+}
+
+.task-main::-webkit-scrollbar {
+  width: 8px;
 }
 
 .task.selected .task-main {
@@ -38,22 +85,9 @@
   overflow: auto;
 }
 
-.task-main::-webkit-scrollbar {
-  width: 8px;
-}
-
 .task.selected .task-content,
 .task.selected .task-title {
   height: initial;
-}
-
-.task-title {
-  padding: 0.7rem 1rem 0;
-  font-size: 1.35rem;
-  font-weight: 600;
-  height: 2.5rem;
-
-  -webkit-line-clamp: 1;
 }
 
 .task-content,
@@ -66,6 +100,15 @@
   overflow-wrap: break-word;
 }
 
+.task-title {
+  padding: 0.7rem 1rem 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  height: 2.5rem;
+
+  -webkit-line-clamp: 1;
+}
+
 .task-content {
   padding: 0 1rem 0.5rem;
   height: 17rem;
@@ -73,16 +116,33 @@
   -webkit-line-clamp: 13;
 }
 
+.task-topbar .btn {
+  padding: 0;
+}
+
+.task-labels,
+.task-info {
+  font-size: 0.8rem;
+  margin: 0.5rem;
+}
+
 .task-info {
   display: flex;
-  align-content: center;
+  align-items: center;
   justify-content: space-between;
-  margin: 0.5rem;
-  font-size: 0.8rem;
+}
+
+.task-badges {
+  display: flex;
+  align-items: center;
+}
+
+.task-badges > * {
+  margin-right: 0.3rem;
 }
 
 .task-date {
-  padding-top: 0.7em;
+  opacity: 0.9;
 }
 
 .task-footer {
@@ -91,8 +151,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  border-top: 1px solid var(--shadow-color);
-  box-shadow: 0 -2px 5px -1.5px var(--shadow-color);
+  border-top: 1px solid rgb(0 0 0 / 35%);
+  box-shadow: 0 -2px 5px -1.5px rgb(0 0 0 / 35%);
 }
 
 .footer-toolbar {
@@ -101,7 +161,6 @@
 }
 
 .float-right {
-  padding: 0;
   float: right;
 }
 
@@ -111,7 +170,80 @@
   clear: both;
 }
 
-@media screen and (max-width: 650px) {
+.status-bar .btn,
+.priority-bar .btn {
+  border: 1px solid rgb(0 0 0 / 30%);
+  background: rgb(0 0 0 / 15%);
+  opacity: 0.8;
+}
+
+.status-bar .dropdown-menu,
+.priority-bar .dropdown-menu {
+  border-radius: 10px;
+  overflow: hidden;
+  width: 90px;
+  top: 120%;
+  left: calc(-45px + 50%);
+}
+
+.status-bar .menu-item,
+.priority-bar .menu-item {
+  justify-content: center;
+}
+
+.todo,
+.doing {
+  color: #fff;
+}
+
+.status-bar .todo {
+  background: rgb(0 0 0 / 45%);
+}
+
+.status-bar .doing {
+  background: rgb(0 0 0 / 30%);
+}
+
+.status-bar .complete {
+  background: rgb(0 0 0 / 15%);
+}
+
+.task > .urgent,
+.task > .high,
+.task > .medium,
+.task > .low {
+  border-radius: inherit;
+}
+.urgent,
+.high,
+.medium,
+.low {
+  color: #fff;
+}
+
+.urgent {
+  background: var(--background-red);
+  background: var(--background-red-webkit-gradient);
+  background: var(--background-red-gradient);
+}
+
+.high {
+  background: var(--background-purple);
+  background: var(--background-purple-webkit-gradient);
+  background: var(--background-purple-gradient);
+}
+.medium {
+  background: var(--background-blue);
+  background: var(--background-blue-webkit-gradient);
+  background: var(--background-blue-gradient);
+}
+.low {
+  background: var(--background-green);
+  background: var(--background-green-webkit-gradient);
+  background: var(--background-green-gradient);
+}
+
+@media screen and (max-width: 680px) {
   .task {
     width: 100%;
     max-width: 45ch;

@@ -1,40 +1,24 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import TextareaAutosize from "react-textarea-autosize";
-import TasksContext from "../context/TasksContext";
+import HighlightSearch from "./common/HighlightSearch";
 
 import "../styles/common/TextArea.css";
 
-function TaskTextarea({ name, selected, value, placeholder, ...rest }) {
-  const { searchQuery } = useContext(TasksContext);
-
-  function highlightSearch(string) {
-    const regex = new RegExp(`(${searchQuery})`, "i");
-    const parts = string.split(regex);
-
-    return searchQuery ? (
-      <div>
-        {parts.map((part, i) =>
-          part.match(regex) ? (
-            <span key={i} className="highlighted">
-              {part}
-            </span>
-          ) : (
-            part
-          )
-        )}
-      </div>
-    ) : (
-      string
-    );
-  }
-
+function TaskTextarea({
+  selected,
+  name,
+  value,
+  placeholder,
+  searchQuery,
+  ...rest
+}) {
   return !selected ? (
-    value && value.trim().length !== 0 ? (
-      highlightSearch(value)
-    ) : (
-      <span className="muted">{placeholder}</span>
-    )
+    <HighlightSearch
+      searchQuery={searchQuery}
+      value={value}
+      plaveholder={placeholder}
+    />
   ) : (
     <TextareaAutosize
       name={name}

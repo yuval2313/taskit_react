@@ -70,6 +70,7 @@ function Form({
           const { name, type, placeholder } = input;
           return (
             <Input
+              key={name}
               name={name}
               className="form-control"
               type={type ? type : "text"}

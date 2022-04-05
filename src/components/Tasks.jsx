@@ -1,27 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import TasksGrid from "./TasksGrid";
+import TasksContext from "./../context/TasksContext";
 
 import Input from "./common/Input";
 import Button from "./common/Button";
 import SortTasks from "./SortTasks";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import TasksGrid from "./TasksGrid";
 
 import { getTasks, saveTask, deleteTask } from "../services/taskService";
+import { logoutUser } from "../services/authService";
 
 import _ from "lodash";
 
-import TasksContext from "./../context/TasksContext";
-
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import "../styles/Tasks.css";
 
 function Tasks() {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState();
-  const [expanding, setExpanding] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState("asc");
-  const newTaskId = useRef(1);
+  const newTaskId = useRef(0);
 
   useEffect(() => {
     populateTasks();
@@ -32,30 +31,36 @@ function Tasks() {
       const { data: tasks } = await getTasks();
       return setTasks(tasks);
     } catch (ex) {
+      console.log(ex);
       const { response } = ex;
-      if (response.status !== 404) alert(response.data);
+      if (response.status !== 404) console.log(response.data);
+      if (response.status === 400 || 401) {
+        logoutUser();
+        window.location = "/";
+      }
     }
   }
 
   async function handleSave(task) {
     const taskClone = { ...task };
-    if (task.new) {
+    if (!task.createdAt) {
       delete taskClone._id;
     }
 
     try {
       const { data: taskInDb } = await saveTask(taskClone);
-
-      const tasksClone = [...tasks];
-      const index = tasks.indexOf(task);
-      tasksClone[index] = taskInDb;
-      setTasks(tasksClone);
-
-      return handleExit();
+      handleChange(task, taskInDb);
     } catch (ex) {
       const { response } = ex;
       alert(response.data);
     }
+  }
+
+  function handleChange(task, taskInDb) {
+    const tasksClone = [...tasks];
+    const index = tasks.indexOf(tasks.filter((t) => task._id === t._id)[0]);
+    tasksClone[index] = taskInDb ? taskInDb : task;
+    setTasks(tasksClone);
   }
 
   async function handleDelete(task) {
@@ -63,41 +68,36 @@ function Tasks() {
 
     const filteredTasks = tasks.filter((t) => t._id !== task._id);
     setTasks(filteredTasks);
+    handleExit();
 
     try {
       if (task.createdAt) await deleteTask(task._id);
-      setSelectedTask();
     } catch (ex) {
       const { response } = ex;
       alert(response.data);
 
       setTasks(backupTasks);
+      handleSelect(task);
     }
   }
 
   function handleNewTask() {
-    const _id = newTaskId.current++;
+    const _id = ++newTaskId.current;
     const newTask = {
       _id,
       title: "",
       content: "",
       status: "",
-      new: true,
+      priority: "",
+      labels: [],
     };
+    setSearchQuery("");
     setTasks([newTask, ...tasks]);
-    setSelectedTask(newTask);
-    handleExpand();
+    handleSelect(newTask);
   }
 
-  function handleSelect(taskId) {
-    const selectedTask = tasks.filter((t) => t._id === taskId)[0];
-    setSelectedTask(selectedTask);
-    handleExpand();
-  }
-
-  function handleExpand() {
-    setExpanding(true);
-    return setTimeout(() => setExpanding(false), 500);
+  function handleSelect(task) {
+    setSelectedTask(task);
   }
 
   function handleExit() {
@@ -117,25 +117,44 @@ function Tasks() {
       const statusOrder = { "": 0, todo: 1, doing: 2, complete: 3 };
       iterate = statusOrder[task[sortBy]];
     }
+    if (sortBy === "priority") {
+      const priorityOrder = { "": 0, low: 1, medium: 2, high: 3, urgent: 4 };
+      iterate = priorityOrder[task[sortBy]];
+    }
 
     return iterate;
   }
 
-  function getSortedTasks() {
+  // function getUnselectedTasks(tasks) {
+  //   if (!selectedTask) return tasks;
+
+  //   const unselectedTasks = tasks.filter((t) => selectedTask._id !== t._id);
+  //   return unselectedTasks;
+  // }
+
+  function getSortedTasks(tasks) {
     const sortedTasks = _.orderBy(tasks, handleSortBy, sortOrder);
     return sortedTasks;
   }
 
-  function getFilteredTasks() {
-    const sortedTasks = getSortedTasks();
-
+  function getFilteredTasks(tasks) {
     const filteredTasks = searchQuery
-      ? sortedTasks.filter(
+      ? tasks.filter(
           (t) =>
             t.title.match(new RegExp(`${searchQuery}`, "i")) ||
             t.content.match(new RegExp(`${searchQuery}`, "i"))
         )
-      : sortedTasks;
+      : tasks;
+    return filteredTasks;
+  }
+
+  function getData() {
+    // const unselectedTasks = getUnselectedTasks(tasks);
+
+    const sortedTasks = getSortedTasks(tasks);
+
+    const filteredTasks = getFilteredTasks(sortedTasks);
+
     return filteredTasks;
   }
 
@@ -144,24 +163,25 @@ function Tasks() {
       value={{
         tasks,
         setTasks,
-        expanding,
         searchQuery,
-        onExit: handleExit,
         onSave: handleSave,
+        onChange: handleChange,
         onDelete: handleDelete,
         onSelect: handleSelect,
+        onExit: handleExit,
       }}
     >
-      <div className="tasks-container">
+      <main className="tasks-container">
         <div className="tasks-head">
           <div className="tasks-search">
             <Input
               name="search"
               type="search"
               placeholder="Search..."
+              value={searchQuery}
               onChange={handleSearch}
             />
-            <Button icon={faPlus} onClick={handleNewTask} />
+            <Button icon={faPlus} onClick={handleNewTask} tooltip="Add Task" />
           </div>
           <div className="tasks-order">
             <SortTasks
@@ -173,11 +193,8 @@ function Tasks() {
           </div>
         </div>
         <hr className="separator" />
-        <TasksGrid
-          selectedTask={selectedTask}
-          filteredTasks={getFilteredTasks()}
-        />
-      </div>
+        <TasksGrid tasks={getData()} selectedTask={selectedTask} />
+      </main>
     </TasksContext.Provider>
   );
 }

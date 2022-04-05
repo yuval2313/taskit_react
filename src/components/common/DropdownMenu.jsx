@@ -1,7 +1,9 @@
 import React from "react";
 
-function DropdownMenu({ children }) {
-  return <ul className="dropdown-menu">{children}</ul>;
+import withCSSTransition from "../hoc/withCSSTransition";
+
+function DropdownMenu({ children, className }) {
+  return <ul className={"dropdown-menu " + className}>{children}</ul>;
 }
 
-export default DropdownMenu;
+export default withCSSTransition(DropdownMenu);

@@ -5,11 +5,13 @@
 .dropdown-menu {
   position: absolute;
   z-index: 1;
-  animation: fadeIn 0.15s ease-in;
-  background: rgb(240, 240, 240);
-  color: #666;
+
+  background: var(--background-main);
+  background: var(--background-main-webkit-gradient);
+  background: var(--background-main-gradient);
+  color: #777;
   border-radius: 3px;
-  box-shadow: 0 0 5px 1px #777;
+  box-shadow: 0 0 5px 1px rgb(0 0 0 / 50%);
 }
 
 .menu-item {
@@ -17,7 +19,7 @@
   display: flex;
   transition: filter 0.2s;
   padding: 1em 0.8em;
-  border-bottom: 1px solid #777;
+  border-bottom: 1px solid rgb(0 0 0 / 50%);
 }
 
 .menu-item:hover,
@@ -26,8 +28,24 @@
   cursor: pointer;
 }
 
-.menu-item:last-child {
-  border-bottom: 0;
+/* CSSTransition Classes */
+
+.menu-transition-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.menu-transition-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.menu-transition-exit {
+  opacity: 1;
+}
+.menu-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
 }
 
 .icon {

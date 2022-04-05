@@ -1,27 +1,38 @@
-import React, { useContext } from "react";
+import React from "react";
+import { TransitionGroup } from "react-transition-group";
+
+import Background from "./common/Background";
 import Task from "./Task";
-import TasksContext from "./../context/TasksContext";
+import SelectedTask from "./SelectedTask";
 
-function TasksGrid({ selectedTask, filteredTasks }) {
-  const { onExit } = useContext(TasksContext);
-
+function TasksGrid({ tasks, selectedTask }) {
   return (
     <div className="tasks-grid-container">
-      <div
-        className={`background ${selectedTask ? "selected" : "hidden"}`}
-        onClick={onExit}
-      ></div>
-      <ul className="tasks-grid">
-        {filteredTasks.map((task) => (
-          <li className="grid-item" key={task._id}>
-            {selectedTask && selectedTask._id === task._id ? (
-              <Task task={task} selected={true} />
-            ) : (
-              <Task task={task} />
-            )}
-          </li>
-        ))}
-      </ul>
+      <Background
+        in={selectedTask ? true : false}
+        timeout={300}
+        classNames="background-transition"
+        unmountOnExit
+      />
+      <TransitionGroup className={"tasks-grid"}>
+        {tasks.map((task) =>
+          selectedTask && selectedTask._id === task._id ? (
+            <SelectedTask
+              selectedTask={task}
+              timeout={300}
+              classNames="task-selected-transition"
+              key={`selected ${task._id}`}
+            />
+          ) : (
+            <Task
+              task={task}
+              timeout={300}
+              classNames="task-transition"
+              key={task._id}
+            />
+          )
+        )}
+      </TransitionGroup>
     </div>
   );
 }

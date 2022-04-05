@@ -23,6 +23,7 @@ function SortTasks({ sortBy, sortOrder, setSortBy, setSortOrder }) {
     { label: "Title", value: "title" },
     { label: "Edited At", value: "updatedAt" },
     { label: "Status", value: "status" },
+    { label: "Priority", value: "priority" },
   ];
 
   return (
@@ -40,6 +41,7 @@ function SortTasks({ sortBy, sortOrder, setSortBy, setSortOrder }) {
         selectedOption={sortBy}
         icon={faCaretDown}
         buttonClassName="btn-clear sort-by"
+        tooltip={"Sort By"}
       />
     </div>
   );

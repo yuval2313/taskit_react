@@ -9,9 +9,7 @@ function App() {
   return (
     <React.Fragment>
       <NavBar />
-      <main className="container">
-        <Tasks />
-      </main>
+      <Tasks />
     </React.Fragment>
   );
 }

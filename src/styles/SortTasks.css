@@ -1,7 +1,9 @@
 .sort-tasks {
   display: flex;
   align-items: center;
-  background: var(--background-color-gradient);
+  background: var(--background-blue);
+  background: var(--background-blue-webkit-gradient);
+  background: var(--background-blue-gradient);
   border-radius: var(--pill-border-radius);
   padding: 0.1rem;
 }
@@ -22,18 +24,16 @@
 }
 
 .sort-tasks .dropdown-menu {
-  background: var(--background-color-gradient);
-  box-shadow: 0 1px 5px 1px rgb(0 0 0 / 50%);
+  background: var(--background-blue);
+  background: var(--background-blue-webkit-gradient);
+  background: var(--background-blue-gradient);
   color: #fff;
   top: 2.3rem;
   left: 0rem;
   right: 0.5rem;
   min-width: 80px;
-  /* max-width: 100px; */
 }
 
 .sort-tasks .menu-item {
-  /* background: rgb(0 0 0 / 0); */
   justify-content: center;
-  border-color: rgb(0 0 0 / 50%);
 }

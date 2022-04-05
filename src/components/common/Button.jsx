@@ -1,6 +1,8 @@
 import React from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Icon from "./Icon";
+import withTooltip from "./../hoc/withTooltip";
+import Tooltip from "./Tooltip";
 
 import "../../styles/common/Button.css";
 
@@ -11,41 +13,34 @@ function Button({
   leftIcon,
   rightIcon,
   className,
+  showTooltip,
+  tooltip,
   ...rest
 }) {
   function renderIconButton() {
-    return (
-      <span className={"btn-icon"}>
-        <FontAwesomeIcon icon={icon} />
-      </span>
-    );
+    return <Icon icon={icon} className="btn-icon" />;
   }
 
   function renderLabeledButton() {
     return (
       <span>
-        {leftIcon && (
-          <span className={"btn-icon-left"}>
-            <FontAwesomeIcon icon={leftIcon} />
-          </span>
-        )}
+        {leftIcon && <Icon icon={leftIcon} className="btn-icon-left" />}
         {children || label}
-        {rightIcon && (
-          <span className={"btn-icon-right"}>
-            <FontAwesomeIcon icon={rightIcon} />
-          </span>
-        )}
+        {rightIcon && <Icon icon={rightIcon} className="btn-icon-right" />}
       </span>
     );
   }
 
   return (
-    <button
-      className={icon ? `btn btn-circle ${className}` : `btn ${className}`}
-      {...rest}
-    >
-      {icon ? renderIconButton() : renderLabeledButton()}
-    </button>
+    <span>
+      {showTooltip && tooltip && <Tooltip tooltip={tooltip} />}
+      <button
+        className={icon ? `btn btn-circle ${className}` : `btn ${className}`}
+        {...rest}
+      >
+        {icon ? renderIconButton() : renderLabeledButton()}
+      </button>
+    </span>
   );
 }
 
@@ -53,4 +48,4 @@ Button.defaultProps = {
   className: "btn",
 };
 
-export default Button;
+export default withTooltip(Button);

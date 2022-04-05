@@ -1,134 +1,82 @@
-import React, { useEffect, useContext } from "react";
-
-import TaskTextarea from "./TaskTextarea";
-import Button from "./common/Button";
-import Status from "./Status";
-
-import { padTo2Digits, isToday, isYear } from "../utilities/dateUtils";
-
-import { faTimes, faCompress } from "@fortawesome/free-solid-svg-icons";
-import { faBell, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import React, { useContext } from "react";
 
 import TasksContext from "../context/TasksContext";
 
-import "../styles/Task.css";
-import "@fortawesome/fontawesome-free/css/all.css";
+import Button from "./common/Button";
+import Status from "./Status";
+import Priority from "./Priority";
+import Labels from "./Labels";
+import HighlightSearch from "./common/HighlightSearch";
 
-function Task({ task, selected }) {
-  const { tasks, setTasks, expanding, onExit, onSave, onDelete, onSelect } =
+import { getEdited } from "../utilities/dateUtils";
+import { useDebounce } from "../hooks/useDebounce";
+import withCSSTransition from "./hoc/withCSSTransition";
+
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import "../styles/Task.css";
+
+function Task({ task }) {
+  const { onChange, onSave, onDelete, onSelect, searchQuery } =
     useContext(TasksContext);
 
-  useEffect(() => {});
+  const { title, content, status, priority, labels, updatedAt } = task;
+
+  useDebounce(() => onSave(task), 5000, [status, priority]);
 
   function handleChange({ currentTarget }) {
     const { name, value } = currentTarget;
-    const index = tasks.indexOf(task);
+    const taskClone = { ...task };
 
-    const tasksClone = [...tasks];
-    tasksClone[index] = { ...task };
-    tasksClone[index][name] = value;
+    taskClone[name] = value;
 
-    setTasks(tasksClone);
+    return onChange(taskClone);
   }
-
-  function getEdited() {
-    let edited = "Edited: ";
-
-    const { updatedAt } = task;
-    if (!updatedAt) return null;
-
-    const date = new Date(updatedAt);
-
-    const year = date.getFullYear().toString();
-    const month = padTo2Digits(date.getMonth() + 1);
-    const day = padTo2Digits(date.getDate());
-    const hours = padTo2Digits(date.getHours());
-    const minutes = padTo2Digits(date.getMinutes());
-
-    if (isToday(date)) return (edited += `${hours}:${minutes}`);
-    if (isYear(date)) return (edited += `${day}/${month}`);
-    return (edited += `${day}/${month}/${year}`);
-  }
-
-  // function focusContent(e) {
-  //   e.preventDefault();
-  //   const parentTask = e.currentTarget.offsetParent;
-  //   const content = parentTask.querySelector("#content");
-  //   content.focus();
-  // }
 
   return (
-    <article
-      className={`task ${selected ? "selected" : ""} ${
-        selected && expanding ? "expanding" : ""
-      }`}
-      onClick={selected ? null : () => onSelect(task._id)}
-    >
-      <div className="task-main">
-        {selected ? (
-          <Button
-            onClick={onExit}
-            className="btn-clear float-right"
-            icon={faCompress}
-          />
-        ) : (
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              return onDelete(task);
-            }}
-            className="btn-clear float-right"
-            icon={faTimes}
-          />
-        )}
-        <div className="task-title">
-          <TaskTextarea
-            name="title"
-            selected={selected}
-            value={task.title}
-            placeholder="Title"
-            onChange={handleChange}
-            maxLength={100}
-          />
-        </div>
-        <hr className="separator" />
-        <div className="task-content">
-          <TaskTextarea
-            name={"content"}
-            selected={selected}
-            value={task.content}
-            placeholder="Empty..."
-            onChange={handleChange}
-            maxLength={500}
-            minRows={15}
-          />
-        </div>
-      </div>
-      <div className="task-info">
-        <div className="task-status">
-          <Status task={task} onChange={handleChange} />
-        </div>
-        <span className="task-date">{getEdited()}</span>
-      </div>
-      {selected && (
-        <div className="task-footer">
-          <div className="footer-toolbar">
-            <Button className="btn-clear" icon={faBell} />
+    <article className="task" onClick={() => onSelect(task)}>
+      <div className={priority}>
+        <div className="task-main">
+          <div className="task-topbar float-right">
             <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                return onDelete(task);
+              }}
               className="btn-clear"
-              icon={faTrashAlt}
-              onClick={() => onDelete(task)}
+              icon={faTimes}
+              tooltip="Delete Task"
             />
           </div>
-          <Button
-            className="btn btn-3d"
-            onClick={() => onSave(task)}
-            label={"Save"}
-          />
+          <div className="task-title">
+            <HighlightSearch
+              searchQuery={searchQuery}
+              value={title}
+              placeholder="Title"
+            />
+          </div>
+          <hr className="separator" />
+          <div className="task-content">
+            <HighlightSearch
+              searchQuery={searchQuery}
+              value={content}
+              placeholder="Empty..."
+            />
+          </div>
         </div>
-      )}
+        <div className="task-labels">
+          {/* TODO: Create labels component */}
+          <Labels labels={labels} />
+        </div>
+        <div className="task-info">
+          <div className="task-badges">
+            <Status task={task} onChange={handleChange} />
+            <Priority task={task} onChange={handleChange} />
+          </div>
+          <span className="task-date">{getEdited(updatedAt)}</span>
+        </div>
+      </div>
     </article>
   );
 }
 
-export default Task;
+export default withCSSTransition(Task);

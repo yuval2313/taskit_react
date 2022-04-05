@@ -1,10 +1,10 @@
-/* .status-bar .btn {
+/* .priority-bar .btn {
   border: 1px solid rgb(0 0 0 / 30%);
   background: rgb(0 0 0 / 15%);
   opacity: 0.8;
 } */
 
-/* .status-bar .dropdown-menu {
+/* .priority-bar .dropdown-menu {
   border-radius: 10px;
   overflow: hidden;
   width: 90px;
@@ -13,6 +13,6 @@
   transform: translateX(-50%);
 }
 
-.status-bar .menu-item {
+.priority-bar .menu-item {
   justify-content: center;
 } */

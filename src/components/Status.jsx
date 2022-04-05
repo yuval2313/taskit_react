@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Dropdown from "./common/Dropdown";
 
-import "../styles/Status.css";
+// import "../styles/Status.css";
 
-function Status({ task, onChange }) {
+function Status({ task, onChange, disabled }) {
   const [showStatuses, setShowStatuses] = useState(false);
 
   const statuses = [
@@ -21,8 +21,11 @@ function Status({ task, onChange }) {
       options={statuses}
       selectedOption={task.status}
       placeholder="+ Status"
-      className="status-bar"
-      buttonClassName="btn-pill"
+      className={`status-bar`}
+      buttonClassName={`btn-pill`}
+      menuClassName={task.priority}
+      tooltip="Set Status"
+      disabled={disabled}
     />
   );
 }

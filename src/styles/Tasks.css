@@ -1,39 +1,7 @@
-ul {
-  padding: 0;
-  margin: 0;
-}
-
-.grid-item {
-  display: flex;
-  justify-content: center;
-}
-
-.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgb(0, 0, 0);
-  height: 100vh;
-  width: 100vw;
-  z-index: 1;
-  transition: opacity 0.5s;
-}
-
-.background.hidden {
-  animation: backgroundFadeOutHeight 0.5s;
-  opacity: 0;
-  height: 0;
-}
-
-.background.selected {
-  opacity: 0.5;
-}
-
 .tasks-grid {
-  position: relative;
-
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 2rem;
 }
 
@@ -68,12 +36,12 @@ ul {
 }
 
 .tasks-grid-container {
-  /* display: flex; */
   justify-content: center;
 }
 
-@media screen and (min-width: 650px) {
+@media screen and (min-width: 680px) {
   .tasks-grid {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
   .tasks-grid-container {
@@ -81,26 +49,20 @@ ul {
   }
 }
 
-@media screen and (min-width: 920px) {
+@media screen and (min-width: 1000px) {
   .tasks-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1330px) {
   .tasks-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media screen and (min-width: 1560px) {
+@media screen and (min-width: 1690px) {
   .tasks-grid {
     grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-@media screen and (min-width: 1820px) {
-  .tasks-grid {
-    grid-template-columns: repeat(6, 1fr);
   }
 }

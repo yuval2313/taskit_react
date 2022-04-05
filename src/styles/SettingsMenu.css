@@ -1,5 +1,6 @@
 .settings-menu .dropdown-menu {
   top: calc(var(--nav-height) - 1.2rem);
-  transform: translateX(-70%);
+  right: 0;
   font-size: 1rem;
+  background: rgb(240, 240, 240);
 }

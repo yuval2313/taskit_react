@@ -5,14 +5,18 @@
 
   color: #fff;
   cursor: pointer;
-  background-color: var(--background-color-main);
-  background: var(--background-color-gradient);
+  background: var(--background-blue);
+  background: var(--background-blue-webkit-gradient);
+  background: var(--background-blue-gradient);
   border: 0;
   border-radius: 5px;
   padding: 0.4em 1em;
   transition: 0.15s;
 }
 
+.task .btn {
+  color: inherit;
+}
 .btn:hover,
 .btn:focus {
   filter: brightness(0.85);

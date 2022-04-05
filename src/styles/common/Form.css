@@ -5,6 +5,7 @@
   transform: translate(-50%, -50%);
 
   font-size: 1.2rem;
+  /* color: initial; */
   background: #f5f5f5;
   box-shadow: 0 0 30px 3px #555;
   border: 1px solid #777;
@@ -35,7 +36,7 @@
 .form-container a {
   font-size: 1rem;
   text-decoration: underline;
-  color: var(--background-color-main);
+  color: var(--background-blue);
 }
 
 @media screen and (min-width: 550px) {

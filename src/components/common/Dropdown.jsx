@@ -1,5 +1,6 @@
 import React from "react";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import { CSSTransition } from "react-transition-group";
 
 import DropdownMenu from "./DropdownMenu";
 import DropdownItem from "./DropdownItem";
@@ -16,9 +17,12 @@ function Dropdown({
   options,
   selectedOption,
   placeholder,
+  tooltip,
   icon,
   className,
   buttonClassName,
+  menuClassName,
+  disabled,
 }) {
   const menuRef = useClickOutside(() =>
     setShowMenu ? setShowMenu(false) : null
@@ -48,26 +52,32 @@ function Dropdown({
         icon={!selectedOption && !placeholder ? icon : null}
         rightIcon={selectedOption || placeholder ? icon : null}
         className={`${buttonClassName} ${selectedOption}`}
+        tooltip={!disabled && tooltip}
+        disabled={disabled}
       />
-      {showMenu && (
-        <DropdownMenu>
-          {options.map((option) => (
-            <DropdownItem
-              onClick={(e) => {
-                if (option.handler) option.handler();
-                return handleSelectOption(e);
-              }}
-              name={name}
-              key={option.value}
-              value={option.value}
-              className={option.value}
-              leftIcon={option.leftIcon}
-            >
-              {option.label}
-            </DropdownItem>
-          ))}
-        </DropdownMenu>
-      )}
+      <DropdownMenu
+        in={showMenu}
+        timeout={500}
+        classNames="menu-transition"
+        unmountOnExit
+        className={menuClassName}
+      >
+        {options.map((option) => (
+          <DropdownItem
+            onClick={(e) => {
+              if (option.handler) option.handler();
+              return handleSelectOption(e);
+            }}
+            name={name}
+            key={option.value}
+            value={option.value}
+            className={option.value}
+            leftIcon={option.leftIcon}
+          >
+            {option.label}
+          </DropdownItem>
+        ))}
+      </DropdownMenu>
     </div>
   );
 }

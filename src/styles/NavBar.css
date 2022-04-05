@@ -3,10 +3,11 @@
 }
 
 .nav {
-  background-color: var(--background-color-main);
-  background: var(--background-color-gradient);
+  background: var(--background-blue);
+  background: var(--background-blue-webkit-gradient);
+  background: var(--background-blue-gradient);
   height: var(--nav-height);
-  box-shadow: 0 2px 4px var(--shadow-color);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 35%);
   color: #fff;
 }
 
