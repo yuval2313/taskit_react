@@ -1,0 +1,46 @@
+@use "../../../styles/themes/backgrounds";
+@use "../generic/Button/index.module.scss" as buttons;
+
+.priority_dropdown {
+  position: relative;
+
+  button {
+    @include buttons.btn_pill;
+    border: 1px solid rgb(0 0 0 / 30%);
+    background: rgb(0 0 0 / 15%);
+    opacity: 0.8;
+  }
+
+  ul {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 90px;
+    top: 120%;
+    left: calc(-45px + 50%);
+
+    li {
+      justify-content: center;
+    }
+  }
+}
+
+$priorities: (
+  "prt_unset": "white",
+  "urgent": "red",
+  "high": "purple",
+  "medium": "blue",
+  "low": "green",
+);
+
+@each $priority, $color in $priorities {
+  .#{$priority} {
+    @include backgrounds.background($color);
+  }
+}
+
+// .task > .urgent,
+// .task > .high,
+// .task > .medium,
+// .task > .low {
+//   border-radius: inherit;
+// }

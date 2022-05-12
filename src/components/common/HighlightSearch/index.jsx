@@ -1,5 +1,7 @@
 import React from "react";
 
+import styles from "./index.module.scss";
+
 function HighlightSearch({ searchQuery, value, placeholder }) {
   function highlightSearch(string) {
     const regex = new RegExp(`(${searchQuery})`, "i");
@@ -9,7 +11,7 @@ function HighlightSearch({ searchQuery, value, placeholder }) {
       <div>
         {parts.map((part, i) =>
           part.match(regex) ? (
-            <span key={i} className="highlighted">
+            <span key={i} className={styles.highlighted}>
               {part}
             </span>
           ) : (
@@ -25,7 +27,7 @@ function HighlightSearch({ searchQuery, value, placeholder }) {
   return value && value.trim().length !== 0 ? (
     highlightSearch(value)
   ) : (
-    <span className="muted">{placeholder}</span>
+    <span className={styles.placeholder}>{placeholder}</span>
   );
 }
 

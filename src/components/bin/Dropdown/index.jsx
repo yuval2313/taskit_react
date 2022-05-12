@@ -1,11 +1,9 @@
 import React from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 
-import DropdownMenu from "../../common/DropdownMenu";
-import DropdownItem from "../../common/DropdownItem";
-import Button from "../../common/Button";
-
-// import "./index.css";
+import DropdownMenu from "../../common/generic/DropdownMenu";
+import DropdownItem from "../../common/generic/DropdownItem";
+import Button from "../../common/generic/Button";
 
 function Dropdown({
   onChange,

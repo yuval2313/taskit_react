@@ -1,5 +1,5 @@
 import Joi from "joi";
-import Input from "../components/common/Input";
+import Input from "../components/common/generic/Input";
 
 export function formHelpers(
   schema,

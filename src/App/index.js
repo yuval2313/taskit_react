@@ -1,15 +1,13 @@
 import React from "react";
 
-import Tasks from "../components/Tasks";
-import NavBar from "../components/NavBar";
-
-import "./index.css";
+import NavBar from "../components/layout/NavBar";
+import Main from "../components/layout/Main";
 
 function App() {
   return (
     <React.Fragment>
       <NavBar />
-      <Tasks />
+      <Main />
     </React.Fragment>
   );
 }

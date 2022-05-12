@@ -1,0 +1,20 @@
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin: 0.5rem;
+
+  .badges {
+    display: flex;
+    align-items: center;
+
+    & > * {
+      margin-right: 0.3rem;
+    }
+  }
+
+  .date {
+    opacity: 0.9;
+  }
+}

@@ -3,22 +3,24 @@ import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
-import { getCurrentUser } from "./services/authService";
-import UserContext from "./context/UserContext";
+import configureStore from "./store/configureStore";
+import { Provider } from "react-redux";
 
 import App from "./App";
-import ProtectedRoute from "./components/common/ProtectedRoute";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import Logout from "./components/Logout";
-import NotFound from "./components/NotFound";
+import ProtectedRoute from "./components/common/generic/ProtectedRoute";
+import Register from "./components/pages/Register";
+import Login from "./components/pages/Login";
+import Logout from "./components/pages/Logout";
+import NotFound from "./components/pages/NotFound";
 
 import "./index.css";
+
+const store = configureStore();
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <UserContext.Provider value={getCurrentUser()}>
+      <Provider store={store}>
         <Routes>
           <Route
             path="/tasks"
@@ -34,7 +36,7 @@ ReactDOM.render(
           <Route path="/" element={<Navigate to="/tasks" />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </UserContext.Provider>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

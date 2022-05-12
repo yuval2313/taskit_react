@@ -1,0 +1,21 @@
+.menu-transition-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.menu-transition-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.menu-transition-exit {
+  opacity: 1;
+}
+.menu-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.icon {
+  width: 30px;
+}

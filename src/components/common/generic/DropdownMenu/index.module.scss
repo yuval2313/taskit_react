@@ -1,0 +1,11 @@
+.menu {
+  position: absolute;
+  z-index: 1;
+  color: #777;
+  border-radius: 3px;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+
+  li:last-child {
+    border-bottom: none;
+  }
+}

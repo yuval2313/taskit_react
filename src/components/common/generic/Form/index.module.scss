@@ -1,0 +1,55 @@
+@use "../Button/index.module.scss" as buttons;
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 1.2rem;
+  background: #f5f5f5;
+  box-shadow: 0 0 30px 3px #555;
+  border: 1px solid #777;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 3rem;
+  width: 100vw;
+  height: 100vh;
+
+  a {
+    font-size: 1rem;
+    text-decoration: underline;
+    color: var(--background-blue);
+  }
+}
+
+.form {
+  text-align: center;
+
+  h1 {
+    margin: 0 0 3rem;
+  }
+
+  button {
+    @include buttons.btn_primary;
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 30px;
+    margin: 1rem 0;
+  }
+
+  a {
+    color: #0037ff;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  .container {
+    padding: 4rem;
+    width: 550px;
+    height: initial;
+    border-radius: 10px;
+  }
+}

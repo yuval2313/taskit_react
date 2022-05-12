@@ -1,8 +1,8 @@
 import React from "react";
 import Joi from "joi";
 
-import Input from "../../common/Input";
-import Button from "../../common/Button";
+import Input from "../../common/generic/Input";
+import Button from "../../common/generic/Button";
 
 import "./index.css";
 

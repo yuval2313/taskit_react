@@ -1,0 +1,13 @@
+@use "./colors";
+@use "../abstracts/functions";
+
+@mixin background($colorName) {
+  $colorValue: map-get(colors.$colors-primary, $colorName);
+  $gradientValue: map-get(colors.$gradients, $colorName);
+
+  background: $colorValue;
+  background: -webkit-#{$gradientValue};
+  background: $gradientValue;
+
+  color: functions.set-color($colorValue);
+}

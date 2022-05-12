@@ -1,0 +1,27 @@
+$colors-primary: (
+  "white": #f0f0f0,
+  "red": #d61212,
+  "blue": #1d83ff,
+  "purple": #a514be,
+  "green": #0aad77,
+);
+
+$colors-secondary: (
+  "white": #faeec6,
+  "red": #e42d15,
+  "blue": #00c3ff,
+  "purple": #db1e83,
+  "green": #40ce4b,
+);
+
+$gradients: ();
+
+@each $color, $value in $colors-primary {
+  $gradients: map-merge(
+    $gradients,
+    (
+      $color:
+        linear-gradient(135deg, $value, map-get($colors-secondary, $color)),
+    )
+  );
+}

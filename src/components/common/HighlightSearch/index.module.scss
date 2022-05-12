@@ -1,0 +1,8 @@
+@use "../../../styles/abstracts/mixins";
+
+.highlighted {
+  background: rgba(255, 255, 0, 0.7);
+}
+.placeholder {
+  @include mixins.muted;
+}

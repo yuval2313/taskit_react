@@ -1,0 +1,31 @@
+@use "../common/Priority/index.module.scss"; // creates classes based on priority
+
+.task {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 0 1rem 2px rgb(0 0 0 / 35%);
+  width: 35ch;
+  transition: width 0.2s;
+
+  & > div {
+    border-radius: inherit;
+  }
+
+  button {
+    color: inherit;
+  }
+
+  &.selected {
+    width: 100%;
+    max-width: 60ch;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .task {
+    width: 100%;
+    max-width: 45ch;
+  }
+}

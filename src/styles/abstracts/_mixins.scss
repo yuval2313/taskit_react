@@ -1,0 +1,31 @@
+@mixin float-right {
+  float: right;
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+@mixin float-left {
+  float: left;
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}
+
+@mixin lineclamp($line-number) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+
+  -webkit-line-clamp: $line-number;
+}
+
+@mixin muted {
+  color: rgba(0, 0, 0, 0.35);
+}

@@ -1,0 +1,15 @@
+$pill-border-radius: 2.5em;
+
+@mixin pill {
+  border-radius: $pill-border-radius;
+}
+
+@mixin pill-left {
+  border-top-left-radius: $pill-border-radius;
+  border-bottom-left-radius: $pill-border-radius;
+}
+
+@mixin pill-right {
+  border-top-right-radius: $pill-border-radius;
+  border-bottom-right-radius: $pill-border-radius;
+}

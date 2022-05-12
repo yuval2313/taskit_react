@@ -1,0 +1,38 @@
+@use "../../../styles/themes/backgrounds";
+
+.container {
+  @include backgrounds.background("blue");
+  height: 4.2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+  color: #fff;
+
+  position: relative;
+  padding: 1rem;
+
+  a {
+    text-decoration: none;
+    color: unset;
+  }
+}
+
+.items {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.2rem;
+
+  .brand {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 0 0 2px #fff;
+  }
+
+  .item {
+    font-size: 1.5rem;
+    // margin-left: 1rem;
+  }
+}

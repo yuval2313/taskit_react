@@ -1,26 +1,36 @@
-import React, { useState, useEffect, useRef } from "react";
-import TasksContext from "../../context/TasksContext";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import Input from "../common/Input";
-import Button from "../common/Button";
-import SortTasks from "../SortTasks";
-import TasksGrid from "../TasksGrid";
+import {
+  getTasks,
+  isLoading,
+  fetchTasks,
+  addTask,
+} from "../../store/entities/tasks";
+import {
+  getSearchQuery,
+  queryTasks,
+  getSortBy,
+  getSortOrder,
+} from "../../store/ui/tasksPage";
 
-import { getTasks, saveTask, deleteTask } from "../../services/taskService";
-import { logoutUser } from "../../services/authService";
+import TasksHead from "./../containers/TasksHead/index";
+import Separator from "../common/generic/Separator";
+import Loading from "../common/generic/Loading";
+import TasksGrid from "../containers/TasksGrid";
 
 import _ from "lodash";
 
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import "./index.css";
+import styles from "./index.module.scss";
 
 function Tasks() {
-  const [tasks, setTasks] = useState([]);
-  const [selectedTaskId, setSelectedTaskId] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("title");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const newTaskId = useRef(0);
+  const dispatch = useDispatch();
+
+  const tasks = useSelector(getTasks);
+  const loading = useSelector(isLoading);
+  const searchQuery = useSelector(getSearchQuery);
+  const sortBy = useSelector(getSortBy);
+  const sortOrder = useSelector(getSortOrder);
 
   useEffect(() => {
     populateTasks();
@@ -28,87 +38,23 @@ function Tasks() {
 
   async function populateTasks() {
     try {
-      const { data: tasks } = await getTasks();
-      return setTasks(tasks);
+      await dispatch(fetchTasks()).unwrap();
     } catch (ex) {
-      console.log(ex);
-      const { response } = ex;
-      if (response.status !== 404) console.log(response.data);
-      if (response.status === (400 || 401)) {
-        logoutUser();
-        window.location = "/";
+      const { status } = ex;
+      if (status === (400 || 401)) {
+        window.location = "/logout";
       }
     }
   }
 
-  async function handleSave(task) {
-    console.log("saving..." + task._id);
-    const taskClone = { ...task };
-    if (!task.createdAt) {
-      delete taskClone._id;
-    }
-
-    try {
-      const { data: taskInDb } = await saveTask(taskClone);
-      handleChange(task, taskInDb);
-    } catch (ex) {
-      const { response } = ex;
-      alert(response.data);
-    }
-  }
-
-  function handleChange(task, taskInDb) {
-    const tasksClone = [...tasks];
-    const index = tasks.indexOf(tasks.filter((t) => task._id === t._id)[0]);
-    tasksClone[index] = taskInDb ? taskInDb : task;
-    setTasks(tasksClone);
-  }
-
-  async function handleDelete(task) {
-    const backupTasks = { ...tasks };
-
-    const filteredTasks = tasks.filter((t) => t._id !== task._id);
-    setTasks(filteredTasks);
-    handleExit();
-
-    try {
-      if (task.createdAt) await deleteTask(task._id);
-    } catch (ex) {
-      const { response } = ex;
-      alert(response.data);
-
-      setTasks(backupTasks);
-      handleSelect(task);
-    }
-  }
-
   function handleNewTask() {
-    const _id = ++newTaskId.current;
-    const newTask = {
-      _id,
-      title: "",
-      content: "",
-      status: "",
-      priority: "",
-      labels: [],
-    };
-    setSearchQuery("");
-    setTasks([newTask, ...tasks]);
-    handleSelect(newTask);
-  }
-
-  function handleSelect(taskId) {
-    setSearchQuery("");
-    setSelectedTaskId(taskId);
-  }
-
-  function handleExit() {
-    setSelectedTaskId("");
+    dispatch(addTask());
+    dispatch(queryTasks(""));
   }
 
   function handleSearch({ currentTarget }) {
     const { value: query } = currentTarget;
-    setSearchQuery(query);
+    dispatch(queryTasks(query));
   }
 
   function handleSortBy(task) {
@@ -152,43 +98,11 @@ function Tasks() {
   }
 
   return (
-    <TasksContext.Provider
-      value={{
-        tasks,
-        setTasks,
-        searchQuery,
-        onSave: handleSave,
-        onChange: handleChange,
-        onDelete: handleDelete,
-        onSelect: handleSelect,
-        onExit: handleExit,
-      }}
-    >
-      <main className="tasks-container">
-        <div className="tasks-head">
-          <div className="tasks-search">
-            <Input
-              name="search"
-              type="search"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={handleSearch}
-            />
-            <Button icon={faPlus} onClick={handleNewTask} tooltip="Add Task" />
-          </div>
-          <div className="tasks-order">
-            <SortTasks
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              setSortBy={setSortBy}
-              setSortOrder={setSortOrder}
-            />
-          </div>
-        </div>
-        <hr className="separator" />
-        <TasksGrid tasks={getData()} selectedTaskId={selectedTaskId} />
-      </main>
-    </TasksContext.Provider>
+    <div className={styles.container}>
+      <TasksHead onSearch={handleSearch} onNewTask={handleNewTask} />
+      <Separator />
+      {loading ? <Loading /> : <TasksGrid tasks={getData()} />}
+    </div>
   );
 }
 
