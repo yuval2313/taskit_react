@@ -8,6 +8,7 @@
   box-shadow: 0 0 1rem 2px rgb(0 0 0 / 35%);
   width: 35ch;
   transition: width 0.2s;
+  cursor: pointer;
 
   & > div {
     border-radius: inherit;
@@ -20,6 +21,7 @@
   &.selected {
     width: 100%;
     max-width: 60ch;
+    cursor: initial;
   }
 }
 

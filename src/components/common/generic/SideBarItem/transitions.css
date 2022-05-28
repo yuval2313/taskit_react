@@ -1,0 +1,19 @@
+.sidebar-item-transition-enter {
+  opacity: 0;
+  transform: translateX(-30%);
+}
+.sidebar-item-transition-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.4s ease;
+}
+
+.sidebar-item-transition-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+.sidebar-item-transition-exit-active {
+  opacity: 0;
+  transform: translateX(-30%);
+  transition: all 0.4s ease-out;
+}

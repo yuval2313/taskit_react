@@ -18,14 +18,14 @@ export function deleteLabel(labelId) {
   return http.delete(labelUrl(labelId));
 }
 
-export function saveLabel(label) {
+export function postLabel(label) {
   const body = mapToBody(label);
-
-  if (label._id) {
-    return http.put(labelUrl(label._id), body);
-  }
-
   return http.post(apiEndpoint, body);
+}
+
+export function putLabel(label) {
+  const body = mapToBody(label);
+  return http.put(labelUrl(label._id), body);
 }
 
 export function mapToBody(label) {

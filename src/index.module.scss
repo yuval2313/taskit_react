@@ -1,6 +1,10 @@
+@use "./styles/themes/colors";
+@use "./components/layout/NavBar/index.module.scss" as navbar;
+
 body {
-  background: rgb(240, 240, 240);
+  background: map-get(colors.$colors-primary, "white");
   margin: 0;
+  padding-top: navbar.$nav-height;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;

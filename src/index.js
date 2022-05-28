@@ -13,7 +13,7 @@ import Login from "./components/pages/Login";
 import Logout from "./components/pages/Logout";
 import NotFound from "./components/pages/NotFound";
 
-import "./index.css";
+import "./index.module.scss";
 
 const store = configureStore();
 

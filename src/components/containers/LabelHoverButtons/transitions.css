@@ -1,0 +1,17 @@
+.label-hover-transition-enter {
+  opacity: 0;
+}
+
+.label-hover-transition-enter-active {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+
+.label-hover-transition-exit {
+  opacity: 1;
+}
+
+.label-hover-transition-exit-active {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}

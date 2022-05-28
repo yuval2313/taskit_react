@@ -10,6 +10,7 @@ import {
 import { clearQuery, selectTask, deselectTask } from "../../store/ui/tasksPage";
 
 import TaskMain from "../containers/TaskMain";
+import TaskLabels from "../containers/TaskLabels";
 import TaskInfo from "../containers/TaskInfo";
 import TaskFooter from "../containers/TaskFooter";
 
@@ -28,6 +29,7 @@ const Task = ({ task, selected, forwardedRef }) => {
     content,
     status,
     priority,
+    labels,
     updatedAt,
     createdAt,
   } = task;
@@ -81,6 +83,7 @@ const Task = ({ task, selected, forwardedRef }) => {
           onDelete={handleDelete}
           onChange={handleChange}
         />
+        <TaskLabels labels={[{ name: "1" }, { name: "2" }]} />
         <TaskInfo
           status={status}
           priority={priority}

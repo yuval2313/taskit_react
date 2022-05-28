@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import * as tasksService from "../../../services/taskService";
+import * as taskService from "../../../services/taskService";
 
 import { selectTask } from "../../ui/tasksPage";
 
@@ -10,7 +10,7 @@ export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await tasksService.getTasks();
+      const { data } = await taskService.getTasks();
       return data;
     } catch (ex) {
       const { response } = ex;
@@ -21,8 +21,8 @@ export const fetchTasks = createAsyncThunk(
 
 export const saveTask = createAsyncThunk("tasks/saveTask", async (task) => {
   let response;
-  if (!task.createdAt) response = await tasksService.postTask(task);
-  else response = await tasksService.putTask(task);
+  if (!task.createdAt) response = await taskService.postTask(task);
+  else response = await taskService.putTask(task);
 
   return { taskId: task._id, task: response.data };
 });
@@ -30,7 +30,7 @@ export const saveTask = createAsyncThunk("tasks/saveTask", async (task) => {
 export const deleteTask = createAsyncThunk("tasks/deleteTask", async (task) => {
   const { _id: taskId, createdAt } = task;
 
-  if (createdAt) await tasksService.deleteTask(taskId);
+  if (createdAt) await taskService.deleteTask(taskId);
   return;
 });
 

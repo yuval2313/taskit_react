@@ -1,12 +1,17 @@
 @use "../../../styles/themes/backgrounds";
 
+$nav-height: 4.2rem;
+
 .container {
   @include backgrounds.background("blue");
-  height: 4.2rem;
+  height: $nav-height;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
   color: #fff;
 
-  position: relative;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
   padding: 1rem;
 
   a {
@@ -15,11 +20,10 @@
   }
 }
 
-.items {
+.nav_items {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  gap: 1.2rem;
 
   .brand {
     position: absolute;
@@ -31,8 +35,14 @@
     text-shadow: 0 0 2px #fff;
   }
 
+  .items_right {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
   .item {
     font-size: 1.5rem;
-    // margin-left: 1rem;
   }
 }

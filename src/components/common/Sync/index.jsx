@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { isSynced } from "../../../store/entities/tasks";
+import * as tasks from "../../../store/entities/tasks";
+import * as labels from "../../../store/entities/labels";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloud, faSyncAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -8,16 +9,19 @@ import { faCloud, faSyncAlt, faCheck } from "@fortawesome/free-solid-svg-icons";
 import styles from "./index.module.scss";
 
 function Sync() {
-  const synced = useSelector(isSynced);
+  const tasksSynced = useSelector(tasks.isSynced);
+  const labelsSynced = useSelector(labels.isSynced);
 
   return (
     <div className={styles.container}>
       <span className={styles.icon}>
         <FontAwesomeIcon icon={faCloud} />
         <span
-          className={`${styles.indicator} ${!synced ? styles.syncing : ""}`}
+          className={`${styles.indicator} ${
+            tasksSynced && labelsSynced ? "" : styles.syncing
+          }`}
         >
-          {synced ? (
+          {tasksSynced && labelsSynced ? (
             <FontAwesomeIcon icon={faCheck} />
           ) : (
             <FontAwesomeIcon icon={faSyncAlt} />

@@ -71,6 +71,10 @@
   &:active {
     background: rgb(0 0 0 / 20%);
   }
+
+  &:disabled {
+    background: initial;
+  }
 }
 
 @mixin btn_3d {

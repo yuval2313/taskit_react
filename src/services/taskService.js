@@ -35,6 +35,6 @@ export function mapToBody(task) {
     content,
     status,
     priority,
-    labelIds: labels.map((label) => label._id),
+    labels,
   };
 }
