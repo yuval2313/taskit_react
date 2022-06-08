@@ -6,10 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLabels, getLabels } from "../../store/entities/labels";
 
 import SideBarMenu from "../common/generic/SideBarMenu";
-import SideBarItem from "../common/generic/SideBarItem";
-import Label from "../Label";
 import Separator from "./../common/generic/Separator/index";
 import LabelsHead from "../containers/LabelsHead";
+import LabelsMain from "../containers/LabelsMain";
 
 function Labels({ className }) {
   const dispatch = useDispatch();
@@ -33,18 +32,7 @@ function Labels({ className }) {
   return (
     <SideBarMenu className={className}>
       <LabelsHead />
-      <TransitionGroup>
-        {labels.map((label) => (
-          <SideBarItem
-            key={label._id}
-            timeout={400}
-            classNames="sidebar-item-transition"
-          >
-            <Label label={label} />
-          </SideBarItem>
-        ))}
-      </TransitionGroup>
-      <Separator />
+      <LabelsMain labels={labels} />
     </SideBarMenu>
   );
 }

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import TaskContext from "../../context/TaskContext";
 
 import Button from "../generic/Button";
 import DropdownMenu from "../generic/DropdownMenu";
@@ -8,8 +9,12 @@ import { useClickOutside } from "../../../hooks/useClickOutside";
 
 import styles from "./index.module.scss";
 
-function Status({ status, priority, onChange }) {
+function Status() {
   const [showStatuses, setShowStatuses] = useState(false);
+  const { task, handlers } = useContext(TaskContext);
+
+  const { status, priority } = task;
+  const { handleChange } = handlers;
 
   const menuRef = useClickOutside(() => setShowStatuses(false));
 
@@ -20,7 +25,7 @@ function Status({ status, priority, onChange }) {
 
   function handleSelectOption(e) {
     setShowStatuses(false);
-    return onChange(e);
+    return handleChange(e);
   }
 
   function getLabel() {

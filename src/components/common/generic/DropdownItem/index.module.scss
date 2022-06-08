@@ -4,10 +4,10 @@
   transition: filter 0.2s;
   padding: 1em 0.8em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-}
 
-.menu_item:hover,
-.menu_item:focus {
-  filter: brightness(0.85);
-  cursor: pointer;
+  &:hover,
+  &:focus {
+    filter: brightness(0.85);
+    cursor: pointer;
+  }
 }

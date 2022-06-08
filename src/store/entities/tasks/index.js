@@ -54,6 +54,16 @@ const slice = createSlice({
       tasks.list[index][name] = value;
       tasks.synced = false;
     },
+    tasksLabelRemoved: (tasks, action) => {
+      const labelId = action.payload;
+
+      tasks.list.forEach((task) => {
+        const { labels } = task;
+
+        const index = labels.findIndex((id) => id === labelId);
+        if (index >= 0) labels.splice(index, 1);
+      });
+    },
     tasksSynced: (tasks, action) => {
       tasks.synced = !!action.payload;
     },
@@ -106,7 +116,8 @@ const slice = createSlice({
   },
 });
 
-const { taskAdded, taskPropertyUpdated, tasksSynced } = slice.actions;
+const { taskAdded, taskPropertyUpdated, tasksLabelRemoved, tasksSynced } =
+  slice.actions;
 export default slice.reducer;
 
 // Action Creators
@@ -127,6 +138,9 @@ export const addTask = () => (dispatch) => {
 
 export const updateTaskProperty = (taskId, name, value) => (dispatch) =>
   dispatch(taskPropertyUpdated({ taskId, name, value }));
+
+export const removeTasksLabel = (labelId) => (dispatch) =>
+  dispatch(tasksLabelRemoved(labelId));
 
 export const setSynced = (setting) => (dispatch) =>
   dispatch(tasksSynced(setting));

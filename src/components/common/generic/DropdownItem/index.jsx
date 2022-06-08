@@ -16,7 +16,6 @@ function DropdownItem({
   return (
     <li
       onClick={(e) => {
-        e.stopPropagation();
         return onClick
           ? onClick({ ...e, currentTarget: { name, value } })
           : null;

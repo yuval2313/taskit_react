@@ -1,25 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
+import TaskContext from "../../context/TaskContext";
 
 import { useSelector } from "react-redux";
+import { getLabelsByIds } from "../../../store/entities/labels";
 
-import Button from "../../common/generic/Button";
-import Icon from "../../common/generic/Icon";
-
-import { faTag, faTags } from "@fortawesome/free-solid-svg-icons";
+import TaskLabel from "../../TaskLabel";
+import TaskLabelsDropdown from "../TaskLabelsDropdown";
 
 import styles from "./index.module.scss";
 
-function TaskLabels({ labels: taskLabels }) {
+function TaskLabels() {
+  const { task, handlers } = useContext(TaskContext);
+  const { labels: labelIds } = task;
+  const { handleChange } = handlers;
+
+  const taskLabels = useSelector(getLabelsByIds(labelIds));
+
+  function handleDelete(labelId, e) {
+    const filteredLabelIds = labelIds.filter((id) => id !== labelId);
+    return handleChange({
+      ...e,
+      currentTarget: { name: "labels", value: filteredLabelIds },
+    });
+  }
+
   return (
     <div className={styles.container}>
-      {/* {labels.map((label) => (
-        <span key={label._id} className={styles.label}>
-          <Icon className={styles.icon} icon={faTag} />
-          {label.name}
-        </span>
-      ))} */}
-      {/* TODO: Add dropdown with 'Add new label option' which turns into input field */}
-      <Button className={styles.label} rightIcon={faTags} label="+" />
+      {taskLabels.map((label) => (
+        <TaskLabel key={label._id} label={label} onDelete={handleDelete} />
+      ))}
+      <TaskLabelsDropdown />
     </div>
   );
 }

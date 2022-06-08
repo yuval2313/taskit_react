@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { deleteLabel, updateLabel } from "./../../store/entities/labels";
+import { removeLabel, updateLabel } from "./../../store/entities/labels";
+
+import withHover from "../hoc/withHover";
 
 import LabelNameEdit from "../containers/LabelNameEdit";
-import LabelHoverButtons from "../containers/LabelHoverButtons";
+import Hover from "../common/generic/Hover";
+import Button from "../common/generic/Button";
 
+import { faPencilAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styles from "./index.module.scss";
+import { removeTasksLabel } from "../../store/entities/tasks";
 
-function Label({ label }) {
-  const [hovering, setHovering] = useState(false);
+function Label({ label, hovering }) {
   const [editable, setEditable] = useState(false);
 
   const dispatch = useDispatch();
 
-  function handleDelete() {
-    dispatch(deleteLabel(label));
+  async function handleDelete() {
+    try {
+      await dispatch(removeLabel(label)).unwrap();
+      dispatch(removeTasksLabel(label._id));
+    } catch (ex) {}
   }
 
   function handleEdit() {
@@ -32,11 +39,7 @@ function Label({ label }) {
     dispatch(updateLabel({ label: labelClone, previousName: label.name }));
   }
   return (
-    <div
-      className={styles.container}
-      onMouseOver={(e) => setHovering(true)}
-      onMouseLeave={(e) => setHovering(false)}
-    >
+    <div className={styles.container}>
       <LabelNameEdit
         editable={editable}
         labelName={label.name}
@@ -44,17 +47,19 @@ function Label({ label }) {
         onExitEdit={handleExitEdit}
       />
       {!editable && (
-        <LabelHoverButtons
-          onEdit={handleEdit}
-          onDelete={handleDelete}
+        <Hover
+          className={styles.hover}
           in={hovering}
-          classNames="label-hover-transition"
+          classNames="hover-transition"
           timeout={300}
           unmountOnExit
-        />
+        >
+          <Button icon={faPencilAlt} onClick={handleEdit} />
+          <Button icon={faTimes} onClick={handleDelete} />
+        </Hover>
       )}
     </div>
   );
 }
 
-export default Label;
+export default withHover(Label);
