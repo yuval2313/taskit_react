@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import TaskContext from "../../context/TaskContext";
 
 import Button from "../../common/generic/Button";
 import Separator from "../../common/generic/Separator";
@@ -7,7 +8,12 @@ import TaskTextarea from "../../common/TaskTextarea";
 import styles from "./index.module.scss";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-function TaskMain({ onDelete, onChange, title, content, selected }) {
+function TaskMain() {
+  const { task, handlers } = useContext(TaskContext);
+
+  const { title, content, selected } = task;
+  const { handleDelete } = handlers;
+
   return (
     <div className={`${styles.main} ${selected ? styles.selected : ""}`}>
       <div className={styles.topbar}>
@@ -15,7 +21,7 @@ function TaskMain({ onDelete, onChange, title, content, selected }) {
           <Button
             onClick={(e) => {
               e.stopPropagation();
-              return onDelete();
+              return handleDelete();
             }}
             icon={faTimes}
             tooltip="Delete Task"
@@ -24,11 +30,9 @@ function TaskMain({ onDelete, onChange, title, content, selected }) {
       </div>
       <div className={styles.title}>
         <TaskTextarea
-          selected={selected}
           name={"title"}
           value={title}
           placeholder={"Title"}
-          onChange={onChange}
           rows={3}
           maxLength={100}
           autoFocus={!title}
@@ -37,11 +41,9 @@ function TaskMain({ onDelete, onChange, title, content, selected }) {
       <Separator />
       <div className={styles.content}>
         <TaskTextarea
-          selected={selected}
           name={"content"}
           value={content}
           placeholder={"Empty..."}
-          onChange={onChange}
           maxLength={5000}
           minRows={15}
           autoFocus={title && !content}

@@ -27,6 +27,11 @@
   .todo,
   .doing {
     color: #fff;
+
+    &:hover {
+      background: rgb(0 0 0 / 60%);
+      transition: background-color 0.2s;
+    }
   }
 
   .todo {
@@ -39,5 +44,11 @@
 
   .complete {
     background: rgb(0 0 0 / 15%);
+
+    &:hover {
+      color: #fff;
+      background: rgb(0 0 0 / 60%);
+      transition: all 0.2s;
+    }
   }
 }

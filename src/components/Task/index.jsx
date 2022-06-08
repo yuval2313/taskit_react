@@ -1,4 +1,5 @@
 import React from "react";
+import TaskContext from "../context/TaskContext";
 
 import { useDispatch } from "react-redux";
 import {
@@ -64,35 +65,31 @@ const Task = ({ task, selected, forwardedRef }) => {
   }
 
   return (
-    <article
-      ref={forwardedRef}
-      className={`
+    <TaskContext.Provider
+      value={{
+        task: { ...task, selected },
+        handlers: { handleChange, handleDelete, handleExit },
+      }}
+    >
+      <article
+        ref={forwardedRef}
+        className={`
         ${styles.task} 
         ${selected ? styles.selected : ""}
       `}
-      onClick={!selected ? () => handleSelect(taskId) : null}
-    >
-      <div
-        ref={selected ? taskRef : undefined}
-        className={priority ? styles[priority] : styles.prt_unset}
+        onClick={!selected ? () => handleSelect(taskId) : null}
       >
-        <TaskMain
-          selected={selected}
-          title={title}
-          content={content}
-          onDelete={handleDelete}
-          onChange={handleChange}
-        />
-        <TaskLabels labels={[{ name: "1" }, { name: "2" }]} />
-        <TaskInfo
-          status={status}
-          priority={priority}
-          updatedAt={updatedAt}
-          onChange={handleChange}
-        />
-        {selected && <TaskFooter onDelete={handleDelete} onExit={handleExit} />}
-      </div>
-    </article>
+        <div
+          ref={selected ? taskRef : undefined}
+          className={priority ? styles[priority] : styles.prt_unset}
+        >
+          <TaskMain />
+          <TaskLabels />
+          <TaskInfo />
+          {selected && <TaskFooter />}
+        </div>
+      </article>
+    </TaskContext.Provider>
   );
 };
 

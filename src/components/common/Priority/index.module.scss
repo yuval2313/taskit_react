@@ -1,7 +1,7 @@
 @use "../../../styles/themes/backgrounds";
 @use "../generic/Button/index.module.scss" as buttons;
 
-.priority_dropdown {
+.dropdown {
   position: relative;
 
   button {
@@ -37,10 +37,3 @@ $priorities: (
     @include backgrounds.background($color);
   }
 }
-
-// .task > .urgent,
-// .task > .high,
-// .task > .medium,
-// .task > .low {
-//   border-radius: inherit;
-// }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import withCSSTransition from "./../../hoc/withCSSTransition";
+import withCSSTransition from "../../hoc/withCSSTransition";
 
 import Button from "../../common/generic/Button";
 

@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addLabel } from "../../../store/entities/labels";
+import {
+  getSearchQuery,
+  queryLabels,
+  clearQuery,
+} from "../../../store/ui/labelsSideBar";
 
 import Input from "../../common/generic/Input";
 import Button from "../../common/generic/Button";
@@ -9,29 +14,32 @@ import Button from "../../common/generic/Button";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import styles from "./index.module.scss";
 
-function LabelsHead(props) {
-  const [newLabel, setNewLabel] = useState({ name: "" });
+function LabelsHead() {
+  // const [newLabel, setNewLabel] = useState({ name: "" });
+  const searchQuery = useSelector(getSearchQuery);
   const dispatch = useDispatch();
 
   function handleChange({ currentTarget }) {
-    const name = currentTarget.value;
-    setNewLabel({ name });
+    dispatch(queryLabels(currentTarget.value));
   }
 
   function handleAddLabel() {
-    dispatch(addLabel(newLabel));
-    setNewLabel({ name: "" });
+    dispatch(addLabel({ name: searchQuery }));
+    dispatch(clearQuery());
+    // dispatch(addLabel(newLabel));
+    // setNewLabel({ name: "" });
   }
 
   function handleCancelAdd() {
-    setNewLabel({ name: "" });
+    dispatch(clearQuery());
+    // setNewLabel({ name: "" });
   }
 
   return (
     <div className={styles.container}>
       <Input
-        placeholder="Add Label..."
-        value={newLabel.name}
+        placeholder="Search..."
+        value={searchQuery}
         onChange={handleChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") handleAddLabel();
@@ -44,8 +52,9 @@ function LabelsHead(props) {
       />
       <Button
         icon={faPlusCircle}
-        disabled={!newLabel.name}
+        disabled={!searchQuery}
         onClick={handleAddLabel}
+        tooltip="Add Label"
       />
     </div>
   );
