@@ -8,6 +8,8 @@ const slice = createSlice({
     searchQuery: "",
     sortBy: "title",
     sortOrder: "asc",
+    view: "grid", // grid || table
+    tableSort: "status", // status || priority
   },
   reducers: {
     taskSelected: (state, action) => {
@@ -28,6 +30,18 @@ const slice = createSlice({
     tasksSortOrderChanged: (state, action) => {
       state.sortOrder = action.payload;
     },
+    gridViewSet: (state) => {
+      state.view = "grid";
+    },
+    tableViewSet: (state) => {
+      state.view = "table";
+    },
+    tableSortedByStatus: (state) => {
+      state.tableSort = "status";
+    },
+    tableSortedByPriority: (state) => {
+      state.tableSort = "priority";
+    },
   },
 });
 
@@ -38,6 +52,10 @@ const {
   queryCleared,
   tasksSortedBy,
   tasksSortOrderChanged,
+  gridViewSet,
+  tableViewSet,
+  tableSortedByStatus,
+  tableSortedByPriority,
 } = slice.actions;
 export default slice.reducer;
 
@@ -66,6 +84,14 @@ export const changeSortOrder = () => (dispatch, getState) => {
   dispatch(tasksSortOrderChanged(newSortOrder));
 };
 
+export const setGridView = () => (dispatch) => dispatch(gridViewSet());
+export const setTableView = () => (dispatch) => dispatch(tableViewSet());
+
+export const sortTableByStatus = () => (dispatch) =>
+  dispatch(tableSortedByStatus());
+export const sortTableByPriority = () => (dispatch) =>
+  dispatch(tableSortedByPriority());
+
 // Selectors
 
 export const getSelectedTaskId = createSelector(
@@ -86,4 +112,14 @@ export const getSortBy = createSelector(
 export const getSortOrder = createSelector(
   (state) => state.ui.tasksPage,
   (tasksPage) => tasksPage.sortOrder
+);
+
+export const getView = createSelector(
+  (state) => state.ui.tasksPage,
+  (tasksPage) => tasksPage.view
+);
+
+export const getTableSort = createSelector(
+  (state) => state.ui.tasksPage,
+  (tasksPage) => tasksPage.tableSort
 );

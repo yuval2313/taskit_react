@@ -122,17 +122,23 @@ export default slice.reducer;
 
 // Action Creators
 let newTaskId = 0;
-export const addTask = () => (dispatch) => {
-  dispatch(
-    taskAdded({
-      _id: ++newTaskId,
-      title: "",
-      content: "",
-      status: "",
-      priority: "",
-      labels: [],
-    })
-  );
+export const addTask = (task) => (dispatch) => {
+  const newTask = {
+    _id: ++newTaskId,
+    title: "",
+    content: "",
+    status: "",
+    priority: "",
+    labels: [],
+  };
+
+  if (task) {
+    for (const property in task) {
+      newTask[property] = task[property];
+    }
+  }
+
+  dispatch(taskAdded(newTask));
   return dispatch(selectTask(newTaskId));
 };
 

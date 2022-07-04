@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
 
-import Button from "../../common/generic/Button";
-import Icon from "../../common/generic/Icon";
-import Labels from "../../Labels";
+import Button from "../../common/Button";
+import Icon from "../../common/Icon";
+import SideBarMenu from "../../common/SideBarMenu";
+import Labels from "../../features/LabelsFeatures/Labels";
 
 import { faBars, faStream, faTags } from "@fortawesome/free-solid-svg-icons";
 import styles from "./index.module.scss";
@@ -13,8 +14,7 @@ function SideBar() {
 
   const menuRef = useClickOutside(() => setShowMenu(false));
 
-  function handleToggleMenu(e) {
-    e.stopPropagation();
+  function handleToggleMenu() {
     return setShowMenu(!showMenu);
   }
 
@@ -31,7 +31,11 @@ function SideBar() {
           onClick={handleToggleMenu}
         />
       </div>
-      <Labels className={`${styles.menu} ${showMenu ? styles.active : ""}`} />
+      <SideBarMenu
+        className={`${styles.menu} ${showMenu ? styles.active : ""}`}
+      >
+        <Labels />
+      </SideBarMenu>
     </div>
   );
 }

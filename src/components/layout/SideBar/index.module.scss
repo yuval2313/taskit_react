@@ -1,5 +1,5 @@
-@use "../../common/generic/Button/index.module.scss" as buttons;
-@use "../../layout/NavBar/index.module.scss" as navbar;
+@use "../../common/Button/index.module.scss" as buttons;
+@use "../NavBar/index.module.scss" as navbar;
 
 $transition-duration: 0.3s;
 
@@ -21,7 +21,6 @@ $transition-duration: 0.3s;
 
     .toggler_label {
       font-size: 1.15rem;
-      color: aliceblue;
     }
     .toggler_button {
       @include buttons.btn_clear;

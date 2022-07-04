@@ -7,8 +7,8 @@ import { registerUser, getUser } from "../../../store/auth";
 import Joi from "joi";
 import passwordComplexity from "joi-password-complexity";
 
-import Button from "../../common/generic/Button";
-import Form from "../../common/generic/Form";
+import Button from "../../common/Button";
+import Form from "../../common/Form";
 
 import { formHelpers } from "../../../helpers/formHelpers";
 

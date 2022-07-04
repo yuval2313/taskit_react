@@ -28,7 +28,7 @@ export function putLabel(label) {
   return http.put(labelUrl(label._id), body);
 }
 
-export function mapToBody(label) {
+function mapToBody(label) {
   const { name } = label;
   return {
     name,

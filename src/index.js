@@ -7,7 +7,7 @@ import configureStore from "./store/configureStore";
 import { Provider } from "react-redux";
 
 import App from "./App";
-import ProtectedRoute from "./components/common/generic/ProtectedRoute";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import Logout from "./components/pages/Logout";

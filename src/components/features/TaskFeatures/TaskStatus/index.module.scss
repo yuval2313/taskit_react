@@ -1,0 +1,54 @@
+@use "../../../../styles/themes/backgrounds";
+@use "../../../common/Button/index.module.scss" as buttons;
+@use "../TaskPriority/index.module.scss" as priority; // creates classes based on priority
+
+.status_dropdown {
+  position: relative;
+
+  button {
+    @include buttons.btn_pill;
+    border: 1px solid rgb(0 0 0 / 30%);
+    background: rgb(0 0 0 / 15%);
+    opacity: 0.8;
+  }
+
+  ul {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 90px;
+    bottom: calc(100% + 0.3rem);
+    left: calc(-45px + 50%);
+
+    li {
+      justify-content: center;
+    }
+  }
+
+  .todo,
+  .doing {
+    color: #fff;
+
+    &:hover {
+      background: rgb(0 0 0 / 60%);
+      transition: background-color 0.2s;
+    }
+  }
+
+  .todo {
+    background: rgb(0 0 0 / 45%);
+  }
+
+  .doing {
+    background: rgb(0 0 0 / 30%);
+  }
+
+  .complete {
+    background: rgb(0 0 0 / 15%);
+
+    &:hover {
+      color: #fff;
+      background: rgb(0 0 0 / 60%);
+      transition: all 0.2s;
+    }
+  }
+}

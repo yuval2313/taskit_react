@@ -28,7 +28,7 @@ export function putTask(task) {
   return http.put(taskUrl(task._id), body);
 }
 
-export function mapToBody(task) {
+function mapToBody(task) {
   const { title, content, status, priority, labels } = task;
   return {
     title,

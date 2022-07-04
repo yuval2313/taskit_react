@@ -1,0 +1,9 @@
+@use "../TaskPriority/index.module.scss";
+
+.container {
+  position: relative;
+
+  ul {
+    bottom: calc(100% + 0.3rem);
+  }
+}

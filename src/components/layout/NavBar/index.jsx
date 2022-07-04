@@ -2,8 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import SideBar from "../SideBar";
-import Sync from "../../common/Sync";
-import SettingsMenu from "../../common/SettingsMenu";
+import Sync from "../../features/AppFeatures/Sync";
+import SettingsMenu from "../../features/AppFeatures/SettingsMenu";
 
 import styles from "./index.module.scss";
 

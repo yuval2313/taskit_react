@@ -1,0 +1,45 @@
+@use "../../../../styles/themes/backgrounds";
+@use "../../../../styles/themes/borders";
+@use "../../../common/Button/index.module.scss" as buttons;
+
+.sort_tasks {
+  display: flex;
+  align-items: center;
+  @include backgrounds.background("blue");
+  @include borders.pill;
+  padding: 0 0.15rem;
+
+  button {
+    border-radius: 0;
+    @include buttons.btn_clear;
+  }
+
+  .sort_order {
+    border-right: 1px solid rgb(0 0 0 / 10%);
+    @include borders.pill-left;
+    font-size: 1rem;
+    padding: 0.4rem;
+  }
+
+  .sort_by {
+    padding: 0.5rem;
+    @include borders.pill-right;
+  }
+}
+
+.sort_dropdown {
+  position: relative;
+
+  ul {
+    @include backgrounds.background("blue");
+    color: #fff;
+    top: 2.3rem;
+    left: 0rem;
+    right: 0.5rem;
+    min-width: 80px;
+
+    li {
+      justify-content: center;
+    }
+  }
+}

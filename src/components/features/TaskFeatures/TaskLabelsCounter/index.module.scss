@@ -1,0 +1,18 @@
+@use "../../../common/Button/index.module.scss" as buttons;
+
+.container {
+  display: flex;
+  align-items: center;
+  padding: 0.3em 0.5em;
+  border-radius: 5px;
+  background: rgb(0 0 0 / 10%);
+
+  .icon {
+    font-size: 0.9em;
+    margin-right: 0.3rem;
+  }
+
+  .counter {
+    font-weight: 500;
+  }
+}

@@ -1,4 +1,3 @@
-import { faCommentsDollar } from "@fortawesome/free-solid-svg-icons";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
@@ -25,7 +24,7 @@ export const addLabel = createAsyncThunk("labels/addLabel", async (label) => {
 
 export const updateLabel = createAsyncThunk(
   "labels/updateLabel",
-  async ({ label, previousName }) => {
+  async ({ label }) => {
     const { data } = await labelService.putLabel(label);
     return data;
   }
@@ -34,9 +33,8 @@ export const updateLabel = createAsyncThunk(
 const deleteLabel = createAsyncThunk(
   "labels/deleteLabel",
   async ({ label }) => {
-    const { _id: labelId, createdAt } = label;
-    if (createdAt) await labelService.deleteLabel(labelId);
-    return;
+    const { data } = await labelService.deleteLabel(label._id);
+    return data;
   }
 );
 
@@ -44,7 +42,6 @@ const slice = createSlice({
   name: "labels",
   initialState: {
     list: [],
-    newLabelId: 0,
     loading: false,
     synced: false,
   },
@@ -64,7 +61,7 @@ const slice = createSlice({
         if (status === 404) labels.synced = true;
       })
 
-      .addCase(deleteLabel.pending, (labels, action) => {
+      .addCase(deleteLabel.pending, (labels) => {
         labels.synced = false;
       })
       .addCase(deleteLabel.fulfilled, (labels, action) => {
@@ -72,16 +69,11 @@ const slice = createSlice({
         labels.list.splice(index, 1);
         labels.synced = true;
       })
-      .addCase(deleteLabel.rejected, (labels, action) => {
-        const { label, index } = action.meta.arg;
-        labels.list.splice(index, 0, label);
+      .addCase(deleteLabel.rejected, (labels) => {
         labels.synced = true;
       })
 
-      // TODO: if opting not to use optimistic update here - update deleteLabel 'if(createdAt)'
-      .addCase(addLabel.pending, (labels, action) => {
-        // const label = action.meta.arg;
-        // labels.list.unshift({ _id: labels.newLabelId++, ...label });
+      .addCase(addLabel.pending, (labels) => {
         labels.synced = false;
       })
       .addCase(addLabel.fulfilled, (labels, action) => {
@@ -90,7 +82,6 @@ const slice = createSlice({
         labels.synced = true;
       })
       .addCase(addLabel.rejected, (labels) => {
-        // labels.list.shift();
         labels.synced = true;
       })
 
@@ -133,6 +124,12 @@ export const getLabels = createSelector(
   (state) => state.entities.labels,
   (labels) => labels.list.slice().reverse()
 );
+
+export const getLabelById = (labelId) =>
+  createSelector(
+    (state) => state.entities.labels,
+    (labels) => labels.list.find((l) => l._id === labelId)
+  );
 
 export const getLabelsByIds = (labelIds) =>
   createSelector(
