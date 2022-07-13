@@ -157,6 +157,12 @@ export const getTasks = createSelector(
   (tasks) => tasks.list
 );
 
+export const getTaskById = (taskId) =>
+  createSelector(
+    (state) => state.entities.tasks,
+    (tasks) => tasks.list.find((t) => t._id === taskId)
+  );
+
 export const isLoading = createSelector(
   (state) => state.entities.tasks,
   (tasks) => tasks.loading

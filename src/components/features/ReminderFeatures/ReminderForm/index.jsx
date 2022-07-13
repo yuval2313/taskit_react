@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addReminder,
   getTaskReminder,
-  getReminders,
 } from "../../../../store/entities/reminders";
 
 import DatePicker from "react-datepicker";
@@ -28,7 +27,6 @@ function ReminderForm({ handleExit }) {
   const taskReminder = useSelector(getTaskReminder(task._id));
 
   useEffect(() => {
-    console.log(taskReminder);
     setDate(taskReminder ? taskReminder.dateTime : new Date());
   }, []);
 

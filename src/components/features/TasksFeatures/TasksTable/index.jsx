@@ -45,6 +45,7 @@ function TasksTable({ tasks }) {
     <div className={styles.container}>
       {columns.map((column) => (
         <TasksColumn
+          key={column.value}
           data={getColumnData(column)}
           column={column}
           onNewTask={handleNewTask}

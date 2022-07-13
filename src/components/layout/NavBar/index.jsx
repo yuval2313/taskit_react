@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import SideBar from "../SideBar";
 import Sync from "../../features/AppFeatures/Sync";
 import SettingsMenu from "../../features/AppFeatures/SettingsMenu";
+import RemindersMenu from "../../features/ReminderFeatures/RemindersMenu";
 
 import styles from "./index.module.scss";
 
@@ -20,6 +21,9 @@ function NavBar() {
           </NavLink>
         </li>
         <li className={styles.items_right}>
+          <div className={styles.item}>
+            <RemindersMenu />
+          </div>
           <div className={styles.item}>
             <Sync />
           </div>

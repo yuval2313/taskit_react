@@ -1,0 +1,42 @@
+@use "../../TaskFeatures/TaskPriority/index.module.scss";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 5px;
+  width: 100%;
+
+  .main {
+    display: flex;
+    align-items: center;
+
+    .title {
+      font-weight: 500;
+      display: inline-block;
+      flex-shrink: 0;
+      margin-right: 0.2rem;
+
+      max-width: 10ch;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      &.untitled {
+        color: rgb(0 0 0 / 30%);
+      }
+    }
+
+    .date {
+      white-space: nowrap;
+    }
+  }
+
+  button {
+    padding: 0.3rem;
+    height: 1rem;
+    width: 1rem;
+    // font-size: 0.9rem;
+  }
+}

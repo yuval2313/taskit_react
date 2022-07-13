@@ -30,7 +30,7 @@ function SettingsMenu() {
   }
 
   return (
-    <div ref={menuRef} className={styles.settings_dropdown}>
+    <div ref={menuRef} className={styles.container}>
       <Button
         onClick={handleToggleMenu}
         icon={faCog}
