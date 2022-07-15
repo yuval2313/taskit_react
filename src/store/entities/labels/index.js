@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import * as labelService from "../../../services/labelService";
+import * as labelService from "../../services/labelService";
 
 // Async Action Creators
 export const fetchLabels = createAsyncThunk(

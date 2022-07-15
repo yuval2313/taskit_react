@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import users from "../../services/userService";
-import auth from "../../services/authService";
+import users from "../services/userService";
+import auth from "../services/authService";
 
 const user = auth.getCurrentUser();
 

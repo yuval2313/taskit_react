@@ -1,11 +1,7 @@
 import React, { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 
-import withForwardRef from "./withForwardRef";
-
 export default function withCSSTransition(Component) {
-  const ComponentWithRef = withForwardRef(Component);
-
   return function WithCSSTransition({
     key,
     timeout,
@@ -31,7 +27,7 @@ export default function withCSSTransition(Component) {
         exit={exit}
         nodeRef={nodeRef}
       >
-        <ComponentWithRef ref={nodeRef} {...rest} />
+        <Component forwardedRef={nodeRef} {...rest} />
       </CSSTransition>
     );
   };

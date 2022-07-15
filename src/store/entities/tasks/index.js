@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import * as taskService from "../../../services/taskService";
+import * as taskService from "../../services/taskService";
+import checkSync from "../../helpers/checkSync";
 
 import { selectTask } from "../../ui/tasksPage";
 
@@ -27,7 +28,7 @@ export const saveTask = createAsyncThunk("tasks/saveTask", async (task) => {
   return { taskId: task._id, task: response.data };
 });
 
-export const deleteTask = createAsyncThunk("tasks/deleteTask", async (task) => {
+const deleteTask = createAsyncThunk("tasks/deleteTask", async ({ task }) => {
   const { _id: taskId, createdAt } = task;
 
   if (createdAt) await taskService.deleteTask(taskId);
@@ -86,29 +87,33 @@ const slice = createSlice({
       })
 
       .addCase(deleteTask.pending, (tasks, action) => {
-        const task = action.meta.arg;
-        const index = tasks.list.findIndex((t) => t._id === task._id);
+        const { index } = action.meta.arg;
         tasks.list.splice(index, 1);
         tasks.synced = false;
       })
-      .addCase(deleteTask.fulfilled, (tasks) => {
-        tasks.previousState = tasks.list;
-        tasks.synced = true;
+      .addCase(deleteTask.fulfilled, (tasks, action) => {
+        const { list, previousState } = tasks;
+        const { index } = action.meta.arg;
+
+        previousState.splice(index, 1);
+        if (checkSync(list, previousState)) tasks.synced = true;
       })
       .addCase(deleteTask.rejected, (tasks, action) => {
-        const task = action.meta.arg;
-        const index = tasks.list.findIndex((t) => t._id === task._id);
-        tasks.list.splice(index, 0, task);
-        tasks.synced = true;
+        const { list, previousState } = tasks;
+        const { task, index } = action.meta.arg;
+
+        list.splice(index, 0, task);
+        if (checkSync(list, previousState)) tasks.synced = true;
       })
 
       .addCase(saveTask.fulfilled, (tasks, action) => {
+        const { list, previousState } = tasks;
         const { task, taskId } = action.payload;
-        const index = tasks.list.findIndex((t) => t._id === taskId);
+        const index = list.findIndex((t) => t._id === taskId);
 
-        tasks.list[index] = task;
-        tasks.previousState[index] = task;
-        tasks.synced = true;
+        list[index] = task;
+        previousState[index] = task;
+        if (checkSync(list, previousState)) tasks.synced = true;
       })
       .addCase(saveTask.rejected, (tasks) => {
         tasks.synced = false;
@@ -140,6 +145,13 @@ export const addTask = (task) => (dispatch) => {
 
   dispatch(taskAdded(newTask));
   return dispatch(selectTask(newTaskId));
+};
+
+export const removeTask = (task) => (dispatch, getState) => {
+  const index = getState().entities.tasks.list.findIndex(
+    (t) => t._id === task._id
+  );
+  return dispatch(deleteTask({ task, index }));
 };
 
 export const updateTaskProperty = (taskId, name, value) => (dispatch) =>

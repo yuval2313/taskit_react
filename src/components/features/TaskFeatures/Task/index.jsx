@@ -1,9 +1,9 @@
 import React from "react";
 import TaskContext from "../../../context/TaskContext";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  deleteTask,
+  removeTask,
   updateTaskProperty,
   saveTask,
 } from "../../../../store/entities/tasks";
@@ -11,7 +11,6 @@ import {
   clearQuery,
   selectTask,
   deselectTask,
-  getView,
 } from "../../../../store/ui/tasksPage";
 
 import TaskMain from "../TaskMain";
@@ -20,6 +19,8 @@ import TaskInfo from "../TaskInfo";
 import TaskFooter from "../TaskFooter";
 
 import { useClickOutside } from "../../../../hooks/useClickOutside";
+import { useDebounce } from "../../../../hooks/useDebounce";
+
 import withCSSTransition from "../../../hoc/withCSSTransition";
 
 import styles from "./index.module.scss";
@@ -27,7 +28,6 @@ import "./transitions.css";
 
 const Task = ({ task, selected, table, forwardedRef }) => {
   const dispatch = useDispatch();
-  const view = useSelector(getView);
 
   const {
     _id: taskId,
@@ -39,6 +39,13 @@ const Task = ({ task, selected, table, forwardedRef }) => {
     createdAt,
   } = task;
 
+  useDebounce(handleSave, 5000, [
+    title,
+    content,
+    status,
+    priority,
+    labels.length,
+  ]);
   const taskRef = useClickOutside(handleExit);
 
   function handleChange({ currentTarget }) {
@@ -52,7 +59,7 @@ const Task = ({ task, selected, table, forwardedRef }) => {
 
   function handleDelete() {
     if (selected) dispatch(deselectTask());
-    return dispatch(deleteTask(task));
+    return dispatch(removeTask(task));
   }
 
   function handleSelect(taskId) {
@@ -61,11 +68,16 @@ const Task = ({ task, selected, table, forwardedRef }) => {
   }
 
   function handleExit() {
-    if (!createdAt) {
-      if (!title && !content && !status && !priority && !labels.length)
-        handleDelete();
-      else handleSave();
-    }
+    if (
+      !createdAt &&
+      !title &&
+      !content &&
+      !status &&
+      !priority &&
+      !labels.length
+    )
+      return handleDelete();
+    handleSave();
     return dispatch(deselectTask());
   }
 
