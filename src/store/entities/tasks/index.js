@@ -20,34 +20,40 @@ export const fetchTasks = createAsyncThunk(
   }
 );
 
-export const saveTask = createAsyncThunk("tasks/saveTask", async (task) => {
-  let response;
-  if (!task.createdAt) response = await taskService.postTask(task);
-  else response = await taskService.putTask(task);
+const createTask = createAsyncThunk("tasks/createTask", async ({ task }) => {
+  const { data } = await taskService.postTask(task);
+  return data;
+});
 
-  return { taskId: task._id, task: response.data };
+const updateTask = createAsyncThunk("tasks/updateTask", async ({ task }) => {
+  const { data } = await taskService.putTask(task);
+  return data;
 });
 
 const deleteTask = createAsyncThunk("tasks/deleteTask", async ({ task }) => {
-  const { _id: taskId, createdAt } = task;
-
-  if (createdAt) await taskService.deleteTask(taskId);
-  return;
+  const { data } = await taskService.deleteTask(task._id);
+  return data;
 });
 
 const slice = createSlice({
   name: "tasks",
   initialState: {
     list: [],
-    previousState: [],
+    cachedList: [],
     loading: false,
     synced: false,
   },
   reducers: {
-    taskAdded: (tasks, action) => {
+    newTaskAdded: (tasks, action) => {
       const task = action.payload;
       tasks.list.unshift(task);
       tasks.synced = false;
+    },
+    newTaskRemoved: (tasks, action) => {
+      const { list, cachedList } = tasks;
+      const index = action.payload;
+      list.splice(index, 1);
+      if (checkSync(list, cachedList)) tasks.synced = true;
     },
     taskPropertyUpdated: (tasks, action) => {
       const { taskId, name, value } = action.payload;
@@ -65,8 +71,8 @@ const slice = createSlice({
         if (index >= 0) labels.splice(index, 1);
       });
     },
-    tasksSynced: (tasks, action) => {
-      tasks.synced = !!action.payload;
+    tasksSynced: (tasks) => {
+      tasks.synced = true;
     },
   },
   extraReducers: (builder) => {
@@ -76,7 +82,7 @@ const slice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (tasks, action) => {
         tasks.list = action.payload;
-        tasks.previousState = action.payload;
+        tasks.cachedList = action.payload;
         tasks.loading = false;
         tasks.synced = true;
       })
@@ -92,42 +98,68 @@ const slice = createSlice({
         tasks.synced = false;
       })
       .addCase(deleteTask.fulfilled, (tasks, action) => {
-        const { list, previousState } = tasks;
+        const { list, cachedList } = tasks;
         const { index } = action.meta.arg;
 
-        previousState.splice(index, 1);
-        if (checkSync(list, previousState)) tasks.synced = true;
+        cachedList.splice(index, 1);
+        if (checkSync(list, cachedList)) tasks.synced = true;
       })
       .addCase(deleteTask.rejected, (tasks, action) => {
-        const { list, previousState } = tasks;
+        const { list, cachedList } = tasks;
         const { task, index } = action.meta.arg;
 
         list.splice(index, 0, task);
-        if (checkSync(list, previousState)) tasks.synced = true;
+        if (checkSync(list, cachedList)) tasks.synced = true;
       })
 
-      .addCase(saveTask.fulfilled, (tasks, action) => {
-        const { list, previousState } = tasks;
-        const { task, taskId } = action.payload;
-        const index = list.findIndex((t) => t._id === taskId);
+      .addCase(createTask.fulfilled, (tasks, action) => {
+        const { list, cachedList } = tasks;
+        const task = action.payload;
+        const { index } = action.meta.arg;
 
         list[index] = task;
-        previousState[index] = task;
-        if (checkSync(list, previousState)) tasks.synced = true;
+        cachedList.unshift(task);
+        if (checkSync(list, cachedList)) tasks.synced = true;
       })
-      .addCase(saveTask.rejected, (tasks) => {
-        tasks.synced = false;
+      .addCase(createTask.rejected, (tasks, action) => {
+        const { list, cachedList } = tasks;
+        const { index } = action.meta.arg;
+
+        list.splice(index, 1);
+        if (checkSync(list, cachedList)) tasks.synced = true;
+      })
+
+      .addCase(updateTask.fulfilled, (tasks, action) => {
+        const { list, cachedList } = tasks;
+        const task = action.payload;
+        const { index } = action.meta.arg;
+
+        list[index] = task;
+        cachedList[index] = task;
+        if (checkSync(list, cachedList)) tasks.synced = true;
+      })
+      .addCase(updateTask.rejected, (tasks, action) => {
+        const { list, cachedList } = tasks;
+        const { index } = action.meta.arg;
+
+        list[index] = cachedList[index];
+        if (checkSync(list, cachedList)) tasks.synced = true;
       });
   },
 });
 
-const { taskAdded, taskPropertyUpdated, tasksLabelRemoved, tasksSynced } =
-  slice.actions;
+const {
+  newTaskAdded,
+  newTaskRemoved,
+  taskPropertyUpdated,
+  tasksLabelRemoved,
+  tasksSynced,
+} = slice.actions;
 export default slice.reducer;
 
 // Action Creators
 let newTaskId = 0;
-export const addTask = (task) => (dispatch) => {
+export const addNewTask = (task) => (dispatch) => {
   const newTask = {
     _id: ++newTaskId,
     title: "",
@@ -143,15 +175,27 @@ export const addTask = (task) => (dispatch) => {
     }
   }
 
-  dispatch(taskAdded(newTask));
+  dispatch(newTaskAdded(newTask));
   return dispatch(selectTask(newTaskId));
+};
+
+export const saveTask = (task) => (dispatch, getState) => {
+  const { list, cachedList } = getState().entities.tasks;
+  const index = list.findIndex((t) => t._id === task._id);
+
+  if (checkSync(list, cachedList)) return dispatch(tasksSynced());
+
+  return !task.createdAt
+    ? dispatch(createTask({ task, index }))
+    : dispatch(updateTask({ task, index }));
 };
 
 export const removeTask = (task) => (dispatch, getState) => {
   const index = getState().entities.tasks.list.findIndex(
     (t) => t._id === task._id
   );
-  return dispatch(deleteTask({ task, index }));
+  if (!task.createdAt) return dispatch(newTaskRemoved(index));
+  else return dispatch(deleteTask({ task, index }));
 };
 
 export const updateTaskProperty = (taskId, name, value) => (dispatch) =>
@@ -160,20 +204,11 @@ export const updateTaskProperty = (taskId, name, value) => (dispatch) =>
 export const removeTasksLabel = (labelId) => (dispatch) =>
   dispatch(tasksLabelRemoved(labelId));
 
-export const setSynced = (setting) => (dispatch) =>
-  dispatch(tasksSynced(setting));
-
 // Selectors
 export const getTasks = createSelector(
   (state) => state.entities.tasks,
   (tasks) => tasks.list
 );
-
-export const getTaskById = (taskId) =>
-  createSelector(
-    (state) => state.entities.tasks,
-    (tasks) => tasks.list.find((t) => t._id === taskId)
-  );
 
 export const isLoading = createSelector(
   (state) => state.entities.tasks,

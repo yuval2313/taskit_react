@@ -5,7 +5,7 @@ import {
   getTasks,
   isLoading,
   fetchTasks,
-  addTask,
+  addNewTask,
 } from "../../../../store/entities/tasks";
 import {
   getSearchQuery,
@@ -54,7 +54,7 @@ function Tasks() {
 
   function handleNewTask() {
     dispatch(
-      addTask({
+      addNewTask({
         title: searchQuery,
         labels: selectedLabelId ? [selectedLabelId] : [],
       })

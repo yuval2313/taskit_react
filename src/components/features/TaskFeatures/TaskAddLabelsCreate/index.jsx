@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDispatch } from "react-redux";
-import { addLabel } from "../../../../store/entities/labels";
+import { createLabel } from "../../../../store/entities/labels";
 
 import DropdownItem from "../../../common/DropdownItem";
 import Button from "../../../common/Button";
@@ -15,7 +15,9 @@ function TaskAddLabelsCreate({ newLabelName, onSelect }) {
 
   async function handleCreate(e) {
     try {
-      const label = await dispatch(addLabel({ name: newLabelName })).unwrap();
+      const label = await dispatch(
+        createLabel({ name: newLabelName })
+      ).unwrap();
       return onSelect({
         ...e,
         currentTarget: { name: "labels", value: label._id },

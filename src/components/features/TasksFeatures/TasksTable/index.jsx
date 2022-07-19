@@ -8,7 +8,7 @@ import {
 } from "./../../../../store/ui/tasksPage/index";
 import { getSelectedLabelId } from "../../../../store/ui/labelsSideBar";
 
-import { addTask } from "../../../../store/entities/tasks";
+import { addNewTask } from "../../../../store/entities/tasks";
 
 import { statuses } from "./../../TaskFeatures/TaskStatus/index";
 import { priorities } from "../../TaskFeatures/TaskPriority";
@@ -25,7 +25,7 @@ function TasksTable({ tasks }) {
 
   function handleNewTask(value) {
     dispatch(
-      addTask({
+      addNewTask({
         title: searchQuery,
         labels: selectedLabelId ? [selectedLabelId] : [],
         [tableSort]: value,

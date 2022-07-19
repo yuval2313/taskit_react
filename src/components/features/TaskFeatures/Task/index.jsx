@@ -39,22 +39,22 @@ const Task = ({ task, selected, table, forwardedRef }) => {
     createdAt,
   } = task;
 
-  useDebounce(handleSave, 5000, [
-    title,
-    content,
-    status,
-    priority,
-    labels.length,
-  ]);
+  useDebounce(
+    () => {
+      if (createdAt) return handleSave();
+    },
+    5000,
+    [title, content, status, priority, labels.length]
+  );
   const taskRef = useClickOutside(handleExit);
 
   function handleChange({ currentTarget }) {
     const { name, value } = currentTarget;
-    dispatch(updateTaskProperty(taskId, name, value));
+    return dispatch(updateTaskProperty(taskId, name, value));
   }
 
   function handleSave() {
-    dispatch(saveTask(task));
+    return dispatch(saveTask(task));
   }
 
   function handleDelete() {
@@ -64,7 +64,7 @@ const Task = ({ task, selected, table, forwardedRef }) => {
 
   function handleSelect(taskId) {
     dispatch(clearQuery());
-    dispatch(selectTask(taskId));
+    return dispatch(selectTask(taskId));
   }
 
   function handleExit() {

@@ -17,10 +17,13 @@ export const fetchLabels = createAsyncThunk(
   }
 );
 
-export const addLabel = createAsyncThunk("labels/addLabel", async (label) => {
-  const { data } = await labelService.postLabel(label);
-  return data;
-});
+export const createLabel = createAsyncThunk(
+  "labels/createLabel",
+  async (label) => {
+    const { data } = await labelService.postLabel(label);
+    return data;
+  }
+);
 
 export const updateLabel = createAsyncThunk(
   "labels/updateLabel",
@@ -73,15 +76,15 @@ const slice = createSlice({
         labels.synced = true;
       })
 
-      .addCase(addLabel.pending, (labels) => {
+      .addCase(createLabel.pending, (labels) => {
         labels.synced = false;
       })
-      .addCase(addLabel.fulfilled, (labels, action) => {
+      .addCase(createLabel.fulfilled, (labels, action) => {
         const label = action.payload;
         labels.list.push(label);
         labels.synced = true;
       })
-      .addCase(addLabel.rejected, (labels) => {
+      .addCase(createLabel.rejected, (labels) => {
         labels.synced = true;
       })
 
