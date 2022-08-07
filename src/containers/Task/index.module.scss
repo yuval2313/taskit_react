@@ -1,0 +1,44 @@
+@use "styles/themes/priorities";
+
+.task {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0 0 20px 2px rgb(0 0 0 / 35%);
+  width: 32ch;
+  transition: 0.5s filter ease;
+  cursor: pointer;
+
+  & > div {
+    border-radius: inherit;
+  }
+
+  button {
+    color: inherit;
+  }
+
+  &.selected {
+    width: 100%;
+    max-width: 60ch;
+    cursor: initial;
+  }
+
+  &.table {
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: 0 0 20px 2px rgb(0 0 0 / 20%);
+  }
+
+  &.hidden {
+    transition: 0.3s filter ease;
+    filter: opacity(0);
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .task {
+    width: 100%;
+    max-width: 45ch;
+  }
+}

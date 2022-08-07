@@ -1,0 +1,15 @@
+@use "styles/themes/backgrounds";
+
+$priorities: (
+  "prt_unset": "white",
+  "urgent": "red",
+  "high": "purple",
+  "medium": "blue",
+  "low": "green",
+);
+
+@each $priority, $color in $priorities {
+  .#{$priority} {
+    @include backgrounds.background($color);
+  }
+}

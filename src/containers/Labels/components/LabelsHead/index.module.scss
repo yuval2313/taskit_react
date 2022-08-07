@@ -1,0 +1,22 @@
+@use "components/Button/index.module.scss" as buttons;
+
+$header-height: 4rem;
+
+.container {
+  display: flex;
+  height: $header-height;
+  align-items: center;
+  padding: 0 0.8rem;
+  gap: 0.5rem;
+  font-size: initial;
+
+  button {
+    @include buttons.btn-clear;
+    color: #fff;
+    font-size: 1.5rem;
+  }
+
+  input {
+    padding: 0.3rem 0.5rem;
+  }
+}

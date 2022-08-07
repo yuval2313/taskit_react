@@ -4,8 +4,6 @@ import { createSelector } from "reselect";
 import * as taskService from "../../services/taskService";
 import checkSync from "../../helpers/checkSync";
 
-import { selectTask } from "../../ui/tasksPage";
-
 // Async Action Creators
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
@@ -57,8 +55,10 @@ const slice = createSlice({
     },
     taskPropertyUpdated: (tasks, action) => {
       const { taskId, name, value } = action.payload;
+
       const index = tasks.list.findIndex((t) => t._id === taskId);
       tasks.list[index][name] = value;
+
       tasks.synced = false;
     },
     tasksLabelRemoved: (tasks, action) => {
@@ -176,7 +176,7 @@ export const addNewTask = (task) => (dispatch) => {
   }
 
   dispatch(newTaskAdded(newTask));
-  return dispatch(selectTask(newTaskId));
+  return newTaskId;
 };
 
 export const saveTask = (task) => (dispatch, getState) => {

@@ -1,0 +1,44 @@
+@use "components/Button/index.module.scss" as buttons;
+
+.label {
+  @include buttons.btn;
+  @include buttons.btn_clear;
+  @include buttons.btn_pill;
+
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.3em 0.5em;
+  max-width: 10ch;
+
+  &.selected {
+    max-width: 40ch;
+  }
+
+  .name {
+    overflow: hidden;
+    &.hovering {
+      width: calc(100% - 12px);
+    }
+  }
+
+  .delete {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    @include buttons.btn_clear;
+    padding: 0.1rem;
+    font-size: 0.7rem;
+    height: 12px;
+    width: 12px;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .label {
+    max-width: 17ch;
+  }
+}

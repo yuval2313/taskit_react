@@ -2,6 +2,16 @@ function padTo2Digits(num) {
   return num.toString().padStart(2, "0");
 }
 
+function dateDestructure(date) {
+  return {
+    year: date.getFullYear().toString(),
+    month: padTo2Digits(date.getMonth() + 1),
+    day: padTo2Digits(date.getDate()),
+    hours: padTo2Digits(date.getHours()),
+    minutes: padTo2Digits(date.getMinutes()),
+  };
+}
+
 export function isYear(date) {
   const today = new Date();
   return date.getFullYear() === today.getFullYear();
@@ -14,16 +24,6 @@ export function isToday(date) {
     date.getMonth() === today.getMonth() &&
     date.getFullYear() === today.getFullYear()
   );
-}
-
-function dateDestructure(date) {
-  return {
-    year: date.getFullYear().toString(),
-    month: padTo2Digits(date.getMonth() + 1),
-    day: padTo2Digits(date.getDate()),
-    hours: padTo2Digits(date.getHours()),
-    minutes: padTo2Digits(date.getMinutes()),
-  };
 }
 
 export function getEdited(updatedAt) {

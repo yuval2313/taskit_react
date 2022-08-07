@@ -1,0 +1,76 @@
+@use "styles/abstracts/mixins";
+@use "components/Button/index.module.scss" as buttons;
+
+.main {
+  padding: 0.5rem;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &.selected {
+    max-height: 80vh;
+    overflow: auto;
+
+    .title,
+    .content {
+      height: initial;
+    }
+  }
+
+  &.table {
+    padding: 0.2rem;
+
+    .topbar {
+      button {
+        font-size: 0.85rem;
+      }
+    }
+
+    .title {
+      font-size: 1rem;
+      height: 2rem;
+    }
+
+    .content {
+      height: 3.5rem;
+      @include mixins.lineclamp(3);
+      font-size: 0.85rem;
+    }
+
+    .separator {
+      margin: 0.5rem 0.3rem;
+    }
+  }
+
+  .topbar {
+    @include mixins.float-right;
+
+    button {
+      @include buttons.btn_clear;
+      padding: 0;
+    }
+  }
+
+  .title {
+    padding: 0.5rem 0.5rem 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    height: 2.2rem;
+
+    @include mixins.lineclamp(1);
+  }
+
+  .content {
+    font-size: 0.95rem;
+    padding: 0 0.5rem 0.5rem;
+    margin-bottom: 0.5rem;
+    height: 12rem;
+
+    @include mixins.lineclamp(9);
+  }
+
+  .separator {
+    margin: 1rem 0.2rem;
+  }
+}

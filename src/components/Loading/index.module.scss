@@ -1,0 +1,14 @@
+@use "styles/abstracts/animations";
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  overflow: hidden;
+
+  .icon {
+    animation: spin 1.2s linear infinite;
+    font-size: 1.7rem;
+  }
+}

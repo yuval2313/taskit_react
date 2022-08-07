@@ -1,5 +1,5 @@
-@use "./styles/themes/colors";
-@use "./components/layout/NavBar/index.module.scss" as navbar;
+@use "styles/themes/colors";
+@use "containers/NavBar/index.module.scss" as navbar;
 
 body {
   background: map-get(colors.$colors-primary, "white");

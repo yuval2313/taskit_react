@@ -35,8 +35,8 @@ export const updateLabel = createAsyncThunk(
 
 const deleteLabel = createAsyncThunk(
   "labels/deleteLabel",
-  async ({ label }) => {
-    const { data } = await labelService.deleteLabel(label._id);
+  async ({ labelId }) => {
+    const { data } = await labelService.deleteLabel(labelId);
     return data;
   }
 );
@@ -115,11 +115,11 @@ const slice = createSlice({
 export default slice.reducer;
 
 // Action Creators
-export const removeLabel = (label) => (dispatch, getState) => {
+export const removeLabel = (labelId) => (dispatch, getState) => {
   const index = getState().entities.labels.list.findIndex(
-    (l) => l._id === label._id
+    (l) => l._id === labelId
   );
-  return dispatch(deleteLabel({ label, index }));
+  return dispatch(deleteLabel({ labelId, index }));
 };
 
 // Selectors

@@ -1,0 +1,16 @@
+@use "styles/abstracts/animations";
+
+.container {
+  .icon {
+    position: relative;
+    .indicator {
+      font-size: 0.5em;
+      position: absolute;
+      right: -10px;
+
+      &.syncing {
+        animation: spin 1.2s linear infinite;
+      }
+    }
+  }
+}

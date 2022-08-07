@@ -1,0 +1,48 @@
+@use "styles/themes/backgrounds";
+
+$nav-height: 4.2rem;
+
+.container {
+  @include backgrounds.background("blue");
+  height: $nav-height;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+  color: #fff;
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+  padding: 1rem;
+
+  a {
+    text-decoration: none;
+    color: unset;
+  }
+}
+
+.nav_items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .brand {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-shadow: 0 0 2px #fff;
+  }
+
+  .items_right {
+    display: flex;
+    // justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .item {
+    font-size: 1.5rem;
+  }
+}

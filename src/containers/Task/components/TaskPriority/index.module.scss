@@ -1,0 +1,25 @@
+@use "components/Button/index.module.scss" as buttons;
+@use "styles/themes/priorities";
+
+.dropdown {
+  position: relative;
+
+  button {
+    @include buttons.btn_pill;
+    border: 1px solid rgb(0 0 0 / 30%);
+    background: rgb(0 0 0 / 15%);
+    opacity: 0.8;
+  }
+
+  ul {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 90px;
+    bottom: calc(100% + 0.3rem);
+    left: calc(-45px + 50%);
+
+    li {
+      justify-content: center;
+    }
+  }
+}

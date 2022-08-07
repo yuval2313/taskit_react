@@ -1,0 +1,44 @@
+@use "components/Button/index.module.scss" as buttons;
+@use "containers/NavBar/index.module.scss" as navbar;
+
+$transition-duration: 0.3s;
+
+.sidebar {
+  .toggler {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 1.2rem;
+
+    position: relative;
+    right: calc(100% - 3.2rem);
+    transition: $transition-duration;
+    &.active {
+      right: 0;
+      transition: $transition-duration;
+    }
+
+    .toggler_label {
+      font-size: 1.15rem;
+    }
+    .toggler_button {
+      @include buttons.btn_clear;
+      padding: 0.4rem;
+      border-radius: 8px;
+    }
+  }
+
+  .menu {
+    position: fixed;
+    z-index: -1;
+    top: navbar.$nav-height;
+    left: -100%;
+    transition: left $transition-duration;
+
+    &.active {
+      left: 0;
+      transition: left $transition-duration;
+    }
+  }
+}

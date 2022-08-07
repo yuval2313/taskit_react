@@ -1,0 +1,45 @@
+@use "components/Button/index.module.scss" as buttons;
+
+.container {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #444;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    font-size: 4em;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 2em;
+  }
+
+  p {
+    font-size: 1.5em;
+  }
+
+  .home {
+    @include buttons.btn;
+    @include buttons.btn_primary;
+    text-decoration: none;
+    margin: 1.5rem;
+    font-size: 1.3em;
+  }
+
+  .error_code {
+    color: rgb(255, 86, 86);
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .container {
+    font-size: 0.6rem;
+  }
+}
