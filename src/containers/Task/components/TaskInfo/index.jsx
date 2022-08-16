@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import TaskContext from "context/TaskContext";
+import React from "react";
 
 import TaskStatus from "../TaskStatus";
 import TaskPriority from "../TaskPriority";
@@ -8,9 +7,7 @@ import { getEdited } from "../../../../helpers/dateHelpers";
 
 import styles from "./index.module.scss";
 
-function TaskInfo({ status, priority, updatedAt, onChange }) {
-  const { table } = useContext(TaskContext);
-
+function TaskInfo({ status, priority, updatedAt, onChange, table }) {
   return (
     <div className={`${styles.container} ${table ? styles.table : ""}`}>
       <div className={styles.badges}>

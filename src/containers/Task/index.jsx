@@ -1,26 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import TasksContext from "context/TasksContext";
-import TaskContext from "context/TaskContext";
 
 import { useDispatch } from "react-redux";
-import { removeTask, updateTaskProperty, saveTask } from "store/entities/tasks";
+import { removeTask, saveTask } from "store/entities/tasks";
 
 import TaskLabels from "containers/TaskLabels";
 import TaskMain from "./components/TaskMain";
 import TaskInfo from "./components/TaskInfo";
 import TaskFooter from "./components/TaskFooter";
 
-import { useClickOutside } from "hooks/useClickOutside";
-import { useDebounce } from "hooks/useDebounce";
-
 import withCSSTransition from "hoc/withCSSTransition";
 
 import styles from "./index.module.scss";
 import "./transitions.scss";
 
-const Task = ({ task, selected, table, hidden, forwardedRef }) => {
+const Task = ({
+  task,
+  selected,
+  table,
+  hidden,
+  isNew,
+  onChange,
+  onExit,
+  forwardedRef,
+}) => {
   const { searchQuery, handleSelectTask, handleDeselectTask } =
     useContext(TasksContext);
+  const dispatch = useDispatch();
+
   const {
     _id: taskId,
     title,
@@ -28,101 +35,61 @@ const Task = ({ task, selected, table, hidden, forwardedRef }) => {
     status,
     priority,
     labels: labelIds,
-    createdAt,
     updatedAt,
   } = task;
 
-  // const [title, setTitle] = useState(task.title);
-  // const [content, setContent] = useState(task.content);
-
-  const dispatch = useDispatch();
-
-  useDebounce(
-    () => {
-      console.log(
-        `debouncing... | Selected: ${!!selected} | Table: ${!!table} | Hidden: ${!!hidden}`
-      );
-      if (createdAt && !hidden) {
-        console.log(
-          `saving... | Selected: ${!!selected} | Table: ${!!table} | Hidden: ${!!hidden}`
-        );
-        return handleSave();
-      }
-    },
-    5000,
-    [title, content, status, priority, labelIds.length]
-    // [title, content]
-  );
-  const taskRef = useClickOutside(handleExit);
-
-  function handleChange({ currentTarget }) {
+  function handleUpdateChange({ currentTarget }) {
     const { name, value } = currentTarget;
-    return dispatch(updateTaskProperty(taskId, name, value));
+    if (selected) onChange({ currentTarget });
+    if (!isNew) return handleSave({ _id: taskId, [name]: value });
   }
 
-  function handleSave() {
+  function handleSave(task) {
     return dispatch(saveTask(task));
   }
-
   function handleDelete() {
     if (selected) handleDeselectTask();
-    return dispatch(removeTask(task));
-  }
-
-  function handleExit() {
-    if (
-      !createdAt &&
-      !title &&
-      !content &&
-      !status &&
-      !priority &&
-      !labelIds.length
-    )
-      return handleDelete();
-    handleSave();
-    return handleDeselectTask();
+    return dispatch(removeTask(taskId));
   }
 
   return (
-    <TaskContext.Provider value={{ selected, table }}>
-      <article
-        ref={forwardedRef}
-        className={`
-        ${styles.task} 
+    <article
+      ref={forwardedRef}
+      className={`
+        ${styles.task}
         ${selected ? styles.selected : ""}
         ${table ? styles.table : ""}
         ${hidden ? styles.hidden : ""}
       `}
-        onClick={!selected ? () => handleSelectTask(taskId) : null}
-      >
-        <div
-          ref={selected ? taskRef : undefined}
-          className={priority ? styles[priority] : styles.prt_unset}
-        >
-          <TaskMain
-            title={title}
-            content={content}
-            searchQuery={searchQuery}
-            onChange={handleChange}
-            onDelete={handleDelete}
-          />
-          <TaskLabels
-            labelIds={labelIds}
-            onChange={handleChange}
-            priority={priority}
-          />
-          <TaskInfo
-            status={status}
-            priority={priority}
-            updatedAt={updatedAt}
-            onChange={handleChange}
-          />
-          {selected && (
-            <TaskFooter onExit={handleExit} onDelete={handleDelete} />
-          )}
-        </div>
-      </article>
-    </TaskContext.Provider>
+      onClick={!selected ? () => handleSelectTask(taskId) : null}
+    >
+      <div className={priority ? styles[priority] : styles.prt_unset}>
+        <TaskMain
+          selected={selected}
+          table={table}
+          title={title}
+          content={content}
+          searchQuery={searchQuery}
+          onChange={onChange}
+          onDelete={handleDelete}
+        />
+        <TaskLabels
+          selected={selected}
+          table={table}
+          labelIds={labelIds}
+          onChange={handleUpdateChange}
+          priority={priority}
+        />
+        <TaskInfo
+          table={table}
+          status={status}
+          priority={priority}
+          updatedAt={updatedAt}
+          onChange={handleUpdateChange}
+        />
+        {selected && <TaskFooter onExit={onExit} onDelete={handleDelete} />}
+      </div>
+    </article>
   );
 };
 

@@ -6,7 +6,6 @@ function useLogout() {
 
   return () => {
     dispatch(logoutUser());
-    window.location = "/";
   };
 }
 

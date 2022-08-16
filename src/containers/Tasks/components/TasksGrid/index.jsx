@@ -6,10 +6,6 @@ import Task from "containers/Task";
 import styles from "./index.module.scss";
 
 function TasksGrid({ tasks, selectedTaskId }) {
-  function isSelected(task) {
-    return selectedTaskId === task._id;
-  }
-
   return (
     <div className={styles.container}>
       <TransitionGroup className={styles.grid}>
@@ -18,7 +14,7 @@ function TasksGrid({ tasks, selectedTaskId }) {
             task.createdAt && (
               <Task
                 task={task}
-                hidden={isSelected(task)}
+                hidden={selectedTaskId === task._id}
                 timeout={300}
                 classNames="task-transition"
                 key={`grid ${task._id}`}

@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import TaskContext from "context/TaskContext";
+import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,7 +6,6 @@ import {
   getLabelsExceptIds,
   createLabel,
 } from "store/entities/labels";
-import { getSelectedLabelId, deselectLabel } from "store/ui";
 
 import TaskLabel from "./components/TaskLabel";
 import TaskLabelsCounter from "./components/TaskLabelsCounter";
@@ -15,18 +13,13 @@ import TaskAddLabels from "./components/TaskAddLabels";
 
 import styles from "./index.module.scss";
 
-function TaskLabels({ labelIds, onChange, priority }) {
-  const { selected, table } = useContext(TaskContext);
-
+function TaskLabels({ labelIds, onChange, priority, selected, table }) {
   const dispatch = useDispatch();
   const taskLabels = useSelector(getLabelsByIds(labelIds));
   const remainingLabels = useSelector(getLabelsExceptIds(labelIds));
-  const selectedLabelId = useSelector(getSelectedLabelId);
 
   function handleDelete({ currentTarget }) {
     const { value: labelId } = currentTarget;
-
-    if (selected && selectedLabelId === labelId) dispatch(deselectLabel());
 
     const filteredLabelIds = labelIds.filter((id) => id !== labelId);
     currentTarget.value = filteredLabelIds;

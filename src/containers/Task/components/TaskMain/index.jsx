@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import TaskContext from "context/TaskContext";
+import React from "react";
 
 import Button from "components/Button";
 import Separator from "components/Separator";
@@ -8,8 +7,15 @@ import TaskTextarea from "components/TaskTextarea";
 import styles from "./index.module.scss";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-function TaskMain({ title, content, searchQuery, onChange, onDelete }) {
-  const { selected, table } = useContext(TaskContext);
+function TaskMain({
+  title,
+  content,
+  searchQuery,
+  onChange,
+  onDelete,
+  selected,
+  table,
+}) {
   return (
     <div
       className={`${styles.main} ${selected ? styles.selected : ""} ${

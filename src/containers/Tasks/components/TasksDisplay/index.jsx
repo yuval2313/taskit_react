@@ -6,11 +6,17 @@ import TasksTable from "../TasksTable";
 
 import styles from "./index.module.scss";
 
-function TasksDisplay({ view, tableSort, tasks, selectedTaskId, onNewTask }) {
+function TasksDisplay({
+  view,
+  tableSort,
+  tasks,
+  selectedTaskId,
+  onNewTask,
+  newTaskProperties,
+}) {
   function isGridView() {
     return view === "grid";
   }
-
   function isTableView() {
     return view === "table";
   }
@@ -18,7 +24,10 @@ function TasksDisplay({ view, tableSort, tasks, selectedTaskId, onNewTask }) {
   return (
     <div className={styles.container}>
       <div className={styles.display}>
-        <TasksSelected tasks={tasks} selectedTaskId={selectedTaskId} />
+        <TasksSelected
+          selectedTaskId={selectedTaskId}
+          newTaskProperties={newTaskProperties}
+        />
         <div className={`${styles.grid} ${isGridView() ? styles.active : ""}`}>
           {isGridView() && (
             <TasksGrid tasks={tasks} selectedTaskId={selectedTaskId} />

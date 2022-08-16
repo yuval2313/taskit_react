@@ -1,10 +1,9 @@
 import React from "react";
-import { TransitionGroup } from "react-transition-group";
 
 import Background from "components/Background";
-import Task from "containers/Task";
+import SelectedTask from "containers/SelectedTask";
 
-function TasksSelected({ tasks, selectedTaskId }) {
+function TasksSelected({ selectedTaskId, newTaskProperties }) {
   return (
     <div>
       <Background
@@ -13,20 +12,14 @@ function TasksSelected({ tasks, selectedTaskId }) {
         classNames="background-transition"
         unmountOnExit
       />
-      <TransitionGroup>
-        {tasks.map(
-          (task) =>
-            task._id === selectedTaskId && (
-              <Task
-                selected
-                task={task}
-                timeout={300}
-                classNames="task-selected-transition"
-                key={`selected ${task._id}`}
-              />
-            )
-        )}
-      </TransitionGroup>
+      <SelectedTask
+        taskId={selectedTaskId}
+        startingProperties={newTaskProperties}
+        in={!!selectedTaskId}
+        timeout={300}
+        classNames="task-selected-transition"
+        unmountOnExit
+      />
     </div>
   );
 }

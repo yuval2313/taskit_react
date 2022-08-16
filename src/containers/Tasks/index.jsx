@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import TasksContext from "context/TasksContext";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getTasks,
-  isLoading,
-  fetchTasks,
-  addNewTask,
-} from "store/entities/tasks";
+import { getTasks, isLoading, fetchTasks } from "store/entities/tasks";
 import { getLabelById } from "store/entities/labels";
 import { getSelectedLabelId, deselectLabel } from "store/ui";
 
@@ -26,6 +21,7 @@ import { useLogout } from "hooks/useLogout";
 import styles from "./index.module.scss";
 
 function Tasks() {
+  const [newTaskProperties, setNewTaskProperties] = useState({});
   const [selectedTaskId, setSelectedTaskId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("title");
@@ -56,23 +52,20 @@ function Tasks() {
     }
   }
 
+  const newTaskId = useRef(1);
   function handleNewTask({ currentTarget }) {
     const { value } = currentTarget;
 
-    const newTaskId = dispatch(
-      addNewTask({
-        title: searchQuery,
-        labels: selectedLabelId ? [selectedLabelId] : [],
-        [tableSort]: view === "table" && value ? value : "",
-      })
-    );
+    setNewTaskProperties({
+      title: searchQuery,
+      labels: selectedLabelId ? [selectedLabelId] : [],
+      [tableSort]: value && view === "table" ? value : "",
+    });
 
-    handleSelectTask(newTaskId);
-    if (searchQuery) clearQuery();
+    return handleSelectTask(newTaskId.current++);
   }
 
   function handleSelectTask(taskId) {
-    if (searchQuery) clearQuery();
     return setSelectedTaskId(taskId);
   }
   function handleDeselectTask() {
@@ -86,9 +79,6 @@ function Tasks() {
   function handleSearch({ currentTarget }) {
     const { value: query } = currentTarget;
     return setSearchQuery(query);
-  }
-  function clearQuery() {
-    return setSearchQuery("");
   }
 
   function handleSortBy(sortBy) {
@@ -151,6 +141,7 @@ function Tasks() {
             view={view}
             tableSort={tableSort}
             onNewTask={handleNewTask}
+            newTaskProperties={newTaskProperties}
           />
         )}
       </main>

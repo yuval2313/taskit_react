@@ -8,10 +8,6 @@ import priorities from "constants/priorities";
 import styles from "./index.module.scss";
 
 function TasksTable({ tasks, tableSort, selectedTaskId, onNewTask }) {
-  function handleAddTask(value) {
-    return onNewTask({ currentTarget: { value } });
-  }
-
   function getColumnData(column) {
     return tasks.filter((t) => t[tableSort] === column.value);
   }
@@ -26,7 +22,7 @@ function TasksTable({ tasks, tableSort, selectedTaskId, onNewTask }) {
           data={getColumnData(column)}
           column={column}
           selectedTaskId={selectedTaskId}
-          onAddTask={handleAddTask}
+          onNewTask={onNewTask}
         />
       ))}
     </div>
