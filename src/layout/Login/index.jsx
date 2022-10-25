@@ -1,73 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser, getUser } from "store/auth";
+import { useSelector } from "react-redux";
+import { isLoggedIn } from "store/auth";
 
-import Joi from "joi";
+import { useGoogleLogin } from "hooks/useGoogleLogin";
 
-import Form from "components/Form";
-import Button from "components/Button";
-import Separator from "components/Separator";
-
-import { formHelpers } from "helpers/formHelpers";
+import styles from "./index.module.scss";
 
 function Login() {
-  const [data, setData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-
-  const dispatch = useDispatch();
-  const user = useSelector(getUser);
+  const loggedIn = useSelector(isLoggedIn);
+  const buttonRef = useGoogleLogin();
 
   useEffect(() => {
-    if (user) window.location = "/";
-  }, [user]);
-
-  const schema = {
-    email: Joi.string()
-      .email({ tlds: { allow: false } })
-      .required()
-      .min(6)
-      .max(50)
-      .label("Email"),
-    password: Joi.string().min(8).max(50).required().label("Password"),
-  };
-
-  async function doSubmit() {
-    try {
-      await dispatch(loginUser(data)).unwrap();
-    } catch (ex) {
-      const { status, data } = ex;
-
-      if (status === 400) {
-        const errorsClone = { ...errors };
-        errorsClone.email = data;
-        return setErrors(errorsClone);
-      }
-    }
-  }
-
-  const { validate, handleSubmit, renderInput } = formHelpers(
-    schema,
-    data,
-    errors,
-    setData,
-    setErrors,
-    doSubmit
-  );
+    if (loggedIn) window.location = "/";
+  }, [loggedIn]);
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <h1>Sign In</h1>
-      {renderInput("email", "Email", "email")}
-      {renderInput("password", "Password", "password")}
-      <Separator />
-      <Button type="submit" label="Login" disabled={validate()} />
-      <NavLink to="/register">Register</NavLink>
-    </Form>
+    <div className={styles.container}>
+      <div ref={buttonRef} style={{ display: loggedIn ? "none" : "initial" }} />
+    </div>
   );
 }
 

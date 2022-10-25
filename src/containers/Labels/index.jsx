@@ -38,7 +38,7 @@ function Labels() {
       await dispatch(fetchLabels()).unwrap();
     } catch (ex) {
       const { status } = ex;
-      if (status === (400 || 401)) {
+      if (status === 400 || status === 401) {
         return logout();
       }
     }

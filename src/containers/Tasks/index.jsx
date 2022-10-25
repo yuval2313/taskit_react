@@ -3,6 +3,7 @@ import TasksContext from "context/TasksContext";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getTasks, isLoading, fetchTasks } from "store/entities/tasks";
+import { fetchCalendars } from "store/gcal/calendarList";
 import { getLabelById } from "store/entities/labels";
 import { getSelectedLabelId, deselectLabel } from "store/ui";
 
@@ -39,6 +40,7 @@ function Tasks() {
 
   useEffect(() => {
     populateTasks();
+    // populateCalendars();
   }, []);
 
   async function populateTasks() {
@@ -46,9 +48,17 @@ function Tasks() {
       await dispatch(fetchTasks()).unwrap();
     } catch (ex) {
       const { status } = ex;
-      if (status === (400 || 401)) {
+      if (status === 400 || status === 401) {
         return logout();
       }
+    }
+  }
+
+  async function populateCalendars() {
+    try {
+      await dispatch(fetchCalendars()).unwrap();
+    } catch (ex) {
+      console.log({ ex });
     }
   }
 

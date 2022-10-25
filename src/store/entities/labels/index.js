@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import * as labelService from "../../services/labelService";
+import * as labelsService from "../../services/labelsService";
 
 // Async Action Creators
 export const fetchLabels = createAsyncThunk(
   "labels/fetchLabels",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await labelService.getLabels();
+      const { data } = await labelsService.getLabels();
       return data;
     } catch (ex) {
       const { response } = ex;
@@ -20,7 +20,7 @@ export const fetchLabels = createAsyncThunk(
 export const createLabel = createAsyncThunk(
   "labels/createLabel",
   async (label) => {
-    const { data } = await labelService.postLabel(label);
+    const { data } = await labelsService.postLabel(label);
     return data;
   }
 );
@@ -28,7 +28,7 @@ export const createLabel = createAsyncThunk(
 export const updateLabel = createAsyncThunk(
   "labels/updateLabel",
   async ({ label }) => {
-    const { data } = await labelService.putLabel(label);
+    const { data } = await labelsService.putLabel(label);
     return data;
   }
 );
@@ -36,7 +36,7 @@ export const updateLabel = createAsyncThunk(
 const deleteLabel = createAsyncThunk(
   "labels/deleteLabel",
   async ({ labelId }) => {
-    const { data } = await labelService.deleteLabel(labelId);
+    const { data } = await labelsService.deleteLabel(labelId);
     return data;
   }
 );

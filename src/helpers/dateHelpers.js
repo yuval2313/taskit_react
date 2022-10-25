@@ -38,3 +38,17 @@ export function getEdited(updatedAt) {
   if (isYear(date)) return (edited += `${day}/${month}`);
   return (edited += `${day}/${month}/${year}`);
 }
+
+export function getJoined(createdAt) {
+  let joined = "Joined ";
+
+  if (!createdAt) return null;
+
+  const date = new Date(createdAt);
+
+  return (joined += `${date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  })}`);
+}

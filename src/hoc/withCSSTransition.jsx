@@ -19,7 +19,7 @@ export default function withCSSTransition(Component) {
       <CSSTransition
         key={key}
         in={inCondition}
-        timeout={timeout}
+        timeout={timeout ? timeout : 0}
         classNames={classNames}
         unmountOnExit={unmountOnExit}
         onExited={onExited}

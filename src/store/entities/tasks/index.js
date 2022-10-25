@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import * as taskService from "../../services/taskService";
+import * as tasksService from "../../services/tasksService";
 import checkSync from "../../helpers/checkSync";
 
 // Async Action Creators
@@ -9,7 +9,7 @@ export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await taskService.getTasks();
+      const { data } = await tasksService.getTasks();
       return data;
     } catch (ex) {
       const { response } = ex;
@@ -19,17 +19,17 @@ export const fetchTasks = createAsyncThunk(
 );
 
 const createTask = createAsyncThunk("tasks/createTask", async (task) => {
-  const { data } = await taskService.postTask(task);
+  const { data } = await tasksService.postTask(task);
   return data;
 });
 
 const updateTask = createAsyncThunk("tasks/updateTask", async ({ task }) => {
-  const { data } = await taskService.putTask(task);
+  const { data } = await tasksService.putTask(task);
   return data;
 });
 
 const deleteTask = createAsyncThunk("tasks/deleteTask", async ({ taskId }) => {
-  const { data } = await taskService.deleteTask(taskId);
+  const { data } = await tasksService.deleteTask(taskId);
   return data;
 });
 
