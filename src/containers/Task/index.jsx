@@ -87,7 +87,13 @@ const Task = ({
           updatedAt={updatedAt}
           onChange={handleUpdateChange}
         />
-        {selected && <TaskFooter onExit={onExit} onDelete={handleDelete} />}
+        {selected && (
+          <TaskFooter
+            priority={priority}
+            onExit={onExit}
+            onDelete={handleDelete}
+          />
+        )}
       </div>
     </article>
   );

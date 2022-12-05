@@ -1,15 +1,16 @@
 import React from "react";
 
 import Button from "components/Button";
+import TaskAddEvent from "../TaskAddEvent";
 
-import { faBell, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import styles from "./index.module.scss";
 
-function TaskFooter({ onExit, onDelete }) {
+function TaskFooter({ priority, onExit, onDelete }) {
   return (
     <div className={styles.footer}>
       <div className={styles.toolbar}>
-        <Button icon={faBell} />
+        <TaskAddEvent priorityStyle={priority} />
         <Button icon={faTrashAlt} onClick={onDelete} />
       </div>
       <Button className={styles.save} onClick={onExit}>

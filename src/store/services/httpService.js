@@ -20,8 +20,11 @@ axios.interceptors.response.use(null, (error) => {
 
 function setJwt(jwt) {
   axios.defaults.headers.common["x-auth-token"] = jwt;
-  axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
 }
+
+// function setGapiJwt(jwt) {
+//   axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
+// }
 
 const http = {
   get: axios.get,
@@ -30,6 +33,7 @@ const http = {
   patch: axios.patch,
   delete: axios.delete,
   setJwt,
+  // setGapiJwt
 };
 
 export default http;

@@ -53,11 +53,11 @@ export function formHelpers(
     doSubmit();
   }
 
-  function renderInput(name, placeholder, type) {
+  function renderInput(name, type, className, placeholder) {
     return (
       <Input
         name={name}
-        className="form-control"
+        className={className}
         type={type ? type : "text"}
         value={data[name]}
         onChange={handleChange}
