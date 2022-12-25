@@ -15,6 +15,8 @@ function Button({
   className,
   showTooltip,
   tooltip,
+  tooltipBottom,
+  type,
   ...rest
 }) {
   function renderIconButton() {
@@ -36,16 +38,21 @@ function Button({
       {showTooltip && tooltip && <Tooltip tooltip={tooltip} />}
       <button
         className={`${icon ? styles.btn_circle : styles.btn} ${className}`}
+        type={type}
         {...rest}
       >
         {icon ? renderIconButton() : renderLabeledButton()}
       </button>
+      {!tooltip && showTooltip && tooltipBottom && (
+        <Tooltip tooltip={tooltipBottom} bottom={true} />
+      )}
     </span>
   );
 }
 
 Button.defaultProps = {
   className: "btn",
+  type: "button",
 };
 
 export default withTooltip(Button);

@@ -1,54 +1,45 @@
-import React, { useState } from "react";
-import Joi from "joi";
+import React, { useState, useEffect } from "react";
 
 import { useUpdateEffect } from "hooks/useUpdateEffect";
 import { formHelpers } from "helpers/formHelpers";
+import { getLocalDate } from "helpers/dateHelpers";
+import eventSchema from "constants/eventSchema";
 
-import Button from "components/Button";
+import FormGroup from "components/FormGroup";
+import DatePicker from "components/DatePicker";
 import EventReminders from "components/EventReminders";
+import EventFormSubmit from "components/EventFormSubmit";
 
 import styles from "./index.module.scss";
 
-function EventForm({ handleExit, handleSave }) {
+function EventForm({ onSave, onDelete, onEdit, event, onExit }) {
   const [data, setData] = useState({
-    start: new Date().toISOString().substring(0, 16),
-    end: new Date().toISOString().substring(0, 16),
+    start: getLocalDate(),
+    end: getLocalDate(Date.now() + 3600000),
     reminders: [],
   });
   const [errors, setErrors] = useState({});
+  const [editable, setEditable] = useState(false);
+
+  useEffect(() => {
+    setData(maptoData(event));
+  }, [event]);
 
   useUpdateEffect(() => {
     const errors = validate();
     if (errors) setErrors(errors);
+    else setErrors({});
   }, [data]);
 
-  const schema = {
-    start: Joi.date()
-      .custom((date, helper) => {
-        if (date < new Date().setSeconds(0, 0))
-          return helper.message("Choose a future start time");
-        else return true;
-      })
-      .required(),
-    end: Joi.date()
-      .custom((date, helper) => {
-        if (date < new Date(data.start).getTime() + 300000)
-          return helper.message(
-            "End time should be greater than start time by at least 5 minutes"
-          );
-        else return true;
-      })
-      .required(),
-    reminders: Joi.array(),
-  };
-
   function doSubmit() {
-    console.log(data, errors);
-    handleExit();
+    if (event) onEdit(data);
+    else onSave(data);
+
+    onExit();
   }
 
-  const { validate, handleSubmit, renderInput } = formHelpers(
-    schema,
+  const { validate, handleSubmit, handleChange } = formHelpers(
+    eventSchema,
     data,
     errors,
     setData,
@@ -56,27 +47,88 @@ function EventForm({ handleExit, handleSave }) {
     doSubmit
   );
 
-  return (
-    <form className={styles.container} onSubmit={handleSubmit}>
-      <h2 className={styles.header}>Calendar Event</h2>
+  function maptoData(event) {
+    const data = {
+      start: getLocalDate(),
+      end: getLocalDate(Date.now() + 3600000),
+      reminders: [],
+    };
 
-      <div className={styles.form_group}>
-        <h3 className={styles.label}>Start</h3>
-        {renderInput("start", "datetime-local", styles.input)}
-      </div>
-      <div className={styles.form_group}>
-        <h3 className={styles.label}>End</h3>
-        {renderInput("end", "datetime-local", styles.input)}
-      </div>
-      <div className={styles.form_group}>
-        <h3 className={styles.label}>Reminders</h3>
-        <EventReminders />
-      </div>
-      <Button
-        className={styles.button}
-        label="Submit"
-        type="submit"
+    if (event) {
+      data.start = getLocalDate(event.start.dateTime);
+      data.end = getLocalDate(event.end.dateTime);
+      data.reminders = event.reminders.useDefault
+        ? []
+        : event.reminders.overrides.map((reminder) => reminder.minutes);
+    }
+
+    return data;
+  }
+
+  function setReminders(reminders) {
+    handleChange({ currentTarget: { name: "reminders", value: reminders } });
+  }
+
+  function handleDelete() {
+    onDelete(event.id);
+    onExit();
+  }
+
+  function handleSetEdit() {
+    setEditable(true);
+  }
+
+  function handleCancelEdit() {
+    setEditable(false);
+    setData(maptoData(event));
+  }
+
+  function handleSubmitEdit(e) {
+    setEditable(false);
+    handleSubmit(e);
+  }
+
+  function isEditable() {
+    return !event || (!!event && editable);
+  }
+
+  return (
+    <form className={styles.container}>
+      <h2 className={styles.header}>{`${event ? "Edit" : "Create"} Event`}</h2>
+      <FormGroup label="Start">
+        <DatePicker
+          name="start"
+          value={data["start"]}
+          onChange={handleChange}
+          error={errors["start"]}
+          disabled={!isEditable()}
+        />
+      </FormGroup>
+      <FormGroup label="End">
+        <DatePicker
+          name="end"
+          value={data["end"]}
+          onChange={handleChange}
+          error={errors["end"]}
+          disabled={!isEditable()}
+        />
+      </FormGroup>
+      <FormGroup label="Reminders">
+        <EventReminders
+          reminders={data.reminders}
+          setReminders={setReminders}
+          disabled={!isEditable()}
+        />
+      </FormGroup>
+      <EventFormSubmit
+        event={event}
+        editable={editable}
         disabled={validate()}
+        onSubmit={handleSubmit}
+        onSubmitEdit={handleSubmitEdit}
+        onCancelEdit={handleCancelEdit}
+        onDelete={handleDelete}
+        onSetEdit={handleSetEdit}
       />
     </form>
   );

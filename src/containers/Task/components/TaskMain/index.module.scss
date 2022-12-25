@@ -44,6 +44,8 @@
   }
 
   .topbar {
+    display: flex;
+    gap: 0.2em;
     @include mixins.float-right;
 
     button {

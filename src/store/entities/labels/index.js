@@ -1,44 +1,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import * as labelsService from "../../services/labelsService";
+import * as labelsService from "store/services/labelsService";
+import withRejectWrapper from "store/helpers/withRejectWrapper";
 
 // Async Action Creators
 export const fetchLabels = createAsyncThunk(
   "labels/fetchLabels",
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await labelsService.getLabels();
-      return data;
-    } catch (ex) {
-      const { response } = ex;
-      return rejectWithValue({ status: response.status });
-    }
-  }
+  withRejectWrapper(async () => {
+    const { data } = await labelsService.getLabels();
+    return data;
+  })
 );
 
 export const createLabel = createAsyncThunk(
   "labels/createLabel",
-  async (label) => {
+  withRejectWrapper(async (label) => {
     const { data } = await labelsService.postLabel(label);
     return data;
-  }
+  })
 );
 
 export const updateLabel = createAsyncThunk(
   "labels/updateLabel",
-  async ({ label }) => {
+  withRejectWrapper(async ({ label }) => {
     const { data } = await labelsService.putLabel(label);
     return data;
-  }
+  })
 );
 
 const deleteLabel = createAsyncThunk(
   "labels/deleteLabel",
-  async ({ labelId }) => {
+  withRejectWrapper(async ({ labelId }) => {
     const { data } = await labelsService.deleteLabel(labelId);
     return data;
-  }
+  })
 );
 
 const slice = createSlice({

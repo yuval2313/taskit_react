@@ -1,0 +1,13 @@
+@use "../../components/Button/index.module.scss" as buttons;
+
+.button {
+  @include buttons.btn_clear;
+  padding: 0;
+  height: 2rem;
+  width: 2rem;
+  .gcal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

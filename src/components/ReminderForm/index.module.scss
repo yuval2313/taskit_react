@@ -1,0 +1,22 @@
+@use "../../styles/abstracts/animations";
+
+.container {
+  .reminder {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: none;
+
+    .input {
+      margin: 0;
+      flex-basis: 50%;
+    }
+  }
+
+  .error {
+    animation: slideDown 0.3s ease-out;
+    background: rgba(243, 2, 22, 0.561);
+    border-radius: 5px;
+    padding: 1rem;
+  }
+}

@@ -1,15 +1,17 @@
 import React from "react";
 
 import Button from "components/Button";
+import Icon from "components/Icon";
 import Separator from "components/Separator";
 import TaskTextarea from "components/TaskTextarea";
 
+import { faTimes, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import styles from "./index.module.scss";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 function TaskMain({
   title,
   content,
+  event,
   searchQuery,
   onChange,
   onDelete,
@@ -24,6 +26,7 @@ function TaskMain({
     >
       {!selected && (
         <div className={styles.topbar}>
+          {event && <Icon icon={faCalendarCheck} />}
           <Button
             onClick={(e) => {
               e.stopPropagation();

@@ -1,3 +1,5 @@
+@use "../../styles/abstracts/animations";
+
 .container {
   flex-basis: 100%;
   position: relative;
@@ -23,24 +25,4 @@
   background: rgba(243, 2, 22, 0.561);
   border-radius: 5px;
   padding: 1rem;
-}
-
-@keyframes slideDown {
-  0% {
-    position: absolute;
-    z-index: -1;
-    transform: translate(0, -100%);
-    opacity: 0;
-  }
-
-  75% {
-    z-index: -1;
-    transform: translate(0, -25%);
-  }
-
-  100% {
-    z-index: 1;
-    opacity: 1;
-    transform: translate(0, 0);
-  }
 }

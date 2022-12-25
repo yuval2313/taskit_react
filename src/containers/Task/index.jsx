@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import TasksContext from "context/TasksContext";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeTask, saveTask } from "store/entities/tasks";
+import { getEventByTaskId, deleteEvent } from "store/entities/gcal";
 
 import TaskLabels from "containers/TaskLabels";
 import TaskMain from "./components/TaskMain";
@@ -10,10 +11,10 @@ import TaskInfo from "./components/TaskInfo";
 import TaskFooter from "./components/TaskFooter";
 
 import withCSSTransition from "hoc/withCSSTransition";
+import colors from "constants/eventColors";
 
 import styles from "./index.module.scss";
 import "./transitions.scss";
-
 const Task = ({
   task,
   selected,
@@ -24,10 +25,6 @@ const Task = ({
   onExit,
   forwardedRef,
 }) => {
-  const { searchQuery, handleSelectTask, handleDeselectTask } =
-    useContext(TasksContext);
-  const dispatch = useDispatch();
-
   const {
     _id: taskId,
     title,
@@ -38,6 +35,11 @@ const Task = ({
     updatedAt,
   } = task;
 
+  const { searchQuery, handleSelectTask, handleDeselectTask } =
+    useContext(TasksContext);
+  const dispatch = useDispatch();
+  const event = useSelector(getEventByTaskId(taskId));
+
   function handleUpdateChange({ currentTarget }) {
     const { name, value } = currentTarget;
     if (selected) onChange({ currentTarget });
@@ -47,9 +49,29 @@ const Task = ({
   function handleSave(task) {
     return dispatch(saveTask(task));
   }
+
   function handleDelete() {
     if (selected) handleDeselectTask();
+    if (event) dispatch(deleteEvent(event.id));
     return dispatch(removeTask(taskId));
+  }
+
+  async function mapToEvent(start, end, reminders) {
+    let data;
+    if (isNew) {
+      data = await handleSave(task).unwrap();
+      handleSelectTask(data._id);
+    }
+
+    return {
+      summary: title,
+      description: content,
+      colorId: colors.find((c) => c.priority === priority).colorId,
+      start,
+      end,
+      reminders,
+      taskId: isNew ? data._id : taskId,
+    };
   }
 
   return (
@@ -69,6 +91,7 @@ const Task = ({
           table={table}
           title={title}
           content={content}
+          event={event}
           searchQuery={searchQuery}
           onChange={onChange}
           onDelete={handleDelete}
@@ -90,6 +113,8 @@ const Task = ({
         {selected && (
           <TaskFooter
             priority={priority}
+            mapToEvent={mapToEvent}
+            event={event}
             onExit={onExit}
             onDelete={handleDelete}
           />

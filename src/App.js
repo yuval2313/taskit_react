@@ -23,9 +23,18 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/tasks/:_id"
+          element={
+            <ProtectedRoute loggedIn={!!loggedIn}>
+              <Main />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
+        <Route path="/not-found" element={<NotFound />} />
         <Route path="/" element={<Navigate to="/tasks" />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/not-found" />} />
       </Routes>
     </BrowserRouter>
   );

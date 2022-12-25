@@ -1,39 +1,14 @@
 .container {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
-  overflow: none;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 
-  .input {
-    margin: 0;
-    flex-basis: 50%;
-  }
-
-  .unit_dropdown {
-    position: relative;
-    flex-basis: 50%;
-    overflow: none;
-
-    button {
-      padding: 0.5rem 1rem;
-      width: 100%;
-    }
-
-    ul {
-      top: calc(100%);
-      width: 100%;
-      height: 300%;
-      color: #333;
-      border-radius: 3px;
-      overflow: hidden;
-      background: white;
-
-      li {
-        display: flex;
-        justify-content: center;
-        padding: 0.5rem;
-      }
+  .reminder {
+    padding: 0 0.5rem;
+    font-size: 1.1em;
+    .icon {
+      margin-right: 1rem;
     }
   }
 }

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchLabels,
   getLabels,
   isLoading,
   createLabel,
@@ -15,7 +14,7 @@ import Loading from "components/Loading";
 import LabelsHead from "./components/LabelsHead";
 import LabelsMain from "./components/LabelsMain";
 
-import { useLogout } from "hooks/useLogout";
+import { usePopulateLabels } from "hooks/usePopulateLabels";
 
 import styles from "./index.module.scss";
 
@@ -27,22 +26,7 @@ function Labels() {
   const loading = useSelector(isLoading);
   const selectedLabelId = useSelector(getSelectedLabelId);
 
-  const logout = useLogout();
-
-  useEffect(() => {
-    populateLabels();
-  }, []);
-
-  async function populateLabels() {
-    try {
-      await dispatch(fetchLabels()).unwrap();
-    } catch (ex) {
-      const { status } = ex;
-      if (status === 400 || status === 401) {
-        return logout();
-      }
-    }
-  }
+  usePopulateLabels();
 
   function handleCreateLabel() {
     return dispatch(createLabel({ name: searchQuery }));

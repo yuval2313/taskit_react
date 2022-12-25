@@ -2,10 +2,5 @@
   "compilerOptions": {
     "baseUrl": "src"
   },
-  "include": [
-    "src",
-    "../bin/React/services/gcal",
-    "../bin/React/store/gcal",
-    "../bin/React/Form"
-  ]
+  "include": ["src"]
 }

@@ -1,0 +1,25 @@
+.container {
+  position: relative;
+  flex-basis: 50%;
+  overflow: none;
+
+  button {
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+
+  ul {
+    bottom: calc(100%);
+    width: 100%;
+    color: #333;
+    border-radius: 3px;
+    overflow: hidden;
+    background: white;
+
+    li {
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+  }
+}

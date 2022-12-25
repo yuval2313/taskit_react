@@ -1,4 +1,4 @@
-import { removeTasksLabel } from "../entities/tasks";
+import { removeTasksLabel } from "store/entities/tasks";
 
 export const tasksLabelRemover =
   ({ dispatch }) =>

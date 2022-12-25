@@ -11,8 +11,7 @@ export function formHelpers(
 ) {
   function validate() {
     const options = { abortEarly: false };
-    const joiObjectSchema = Joi.object(schema);
-    const { error } = joiObjectSchema.validate(data, options);
+    const { error } = schema.validate(data, options);
     if (!error) return null;
 
     const errors = {};
@@ -24,7 +23,8 @@ export function formHelpers(
 
   function validateProperty({ name, value }) {
     const obj = { [name]: value };
-    const propertySchema = Joi.object({ [name]: schema[name] });
+    const propertySchema = Joi.object({ [name]: schema.extract(name) });
+
     const { error } = propertySchema.validate(obj);
 
     return error ? error.details[0].message : null;
@@ -32,7 +32,7 @@ export function formHelpers(
 
   function handleChange({ currentTarget: input }) {
     const errorsClone = { ...errors };
-    const errorMessage = validateProperty(input, schema);
+    const errorMessage = validateProperty(input);
     if (errorMessage) errorsClone[input.name] = errorMessage;
     else delete errorsClone[input.name];
 

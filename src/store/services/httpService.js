@@ -22,10 +22,6 @@ function setJwt(jwt) {
   axios.defaults.headers.common["x-auth-token"] = jwt;
 }
 
-// function setGapiJwt(jwt) {
-//   axios.defaults.headers.common["Authorization"] = `Bearer ${jwt}`;
-// }
-
 const http = {
   get: axios.get,
   post: axios.post,
@@ -33,7 +29,6 @@ const http = {
   patch: axios.patch,
   delete: axios.delete,
   setJwt,
-  // setGapiJwt
 };
 
 export default http;

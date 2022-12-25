@@ -6,3 +6,23 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes slideDown {
+  0% {
+    position: absolute;
+    z-index: -1;
+    transform: translate(0, -100%);
+    opacity: 0;
+  }
+
+  75% {
+    z-index: -1;
+    transform: translate(0, -25%);
+  }
+
+  100% {
+    z-index: 1;
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}

@@ -1,37 +1,42 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import * as tasksService from "../../services/tasksService";
-import checkSync from "../../helpers/checkSync";
+import * as tasksService from "store/services/tasksService";
+import checkSync from "store/helpers/checkSync";
+import withRejectWrapper from "store/helpers/withRejectWrapper";
 
 // Async Action Creators
 export const fetchTasks = createAsyncThunk(
   "tasks/fetchTasks",
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await tasksService.getTasks();
-      return data;
-    } catch (ex) {
-      const { response } = ex;
-      return rejectWithValue({ status: response.status });
-    }
-  }
+  withRejectWrapper(async () => {
+    const { data } = await tasksService.getTasks();
+    return data;
+  })
 );
 
-const createTask = createAsyncThunk("tasks/createTask", async (task) => {
-  const { data } = await tasksService.postTask(task);
-  return data;
-});
+const createTask = createAsyncThunk(
+  "tasks/createTask",
+  withRejectWrapper(async (task) => {
+    const { data } = await tasksService.postTask(task);
+    return data;
+  })
+);
 
-const updateTask = createAsyncThunk("tasks/updateTask", async ({ task }) => {
-  const { data } = await tasksService.putTask(task);
-  return data;
-});
+const updateTask = createAsyncThunk(
+  "tasks/updateTask",
+  withRejectWrapper(async ({ task }) => {
+    const { data } = await tasksService.putTask(task);
+    return data;
+  })
+);
 
-const deleteTask = createAsyncThunk("tasks/deleteTask", async ({ taskId }) => {
-  const { data } = await tasksService.deleteTask(taskId);
-  return data;
-});
+const deleteTask = createAsyncThunk(
+  "tasks/deleteTask",
+  withRejectWrapper(async ({ taskId }) => {
+    const { data } = await tasksService.deleteTask(taskId);
+    return data;
+  })
+);
 
 const slice = createSlice({
   name: "tasks",
@@ -89,11 +94,14 @@ const slice = createSlice({
         if (checkSync(list, cachedList)) tasks.synced = true;
       })
       .addCase(deleteTask.rejected, (tasks, action) => {
+        const { status } = action.payload;
         const { index } = action.meta.arg;
         const { list, cachedList } = tasks;
         const cachedTask = cachedList[index];
 
-        list.splice(index, 0, cachedTask);
+        if (status === 404) cachedList.splice(index, 1);
+        else list.splice(index, 0, cachedTask);
+
         if (checkSync(list, cachedList)) tasks.synced = true;
       })
 
@@ -179,7 +187,9 @@ export const setTasksSynced = (setting) => (dispatch, getState) => {
     dispatch(tasksSynced());
   else if (setting === false && synced) dispatch(tasksUnsynced());
 };
+
 // Selectors
+
 export const getTasks = createSelector(
   (state) => state.entities.tasks,
   (tasks) => tasks.list

@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import TasksContext from "context/TasksContext";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks, isLoading, fetchTasks } from "store/entities/tasks";
+import { getTasks, isLoading } from "store/entities/tasks";
 import { getLabelById } from "store/entities/labels";
 import { getSelectedLabelId, deselectLabel } from "store/ui";
 
@@ -16,7 +16,8 @@ import {
   getFilteredTasks,
   getLabeledTasks,
 } from "helpers/tasksHelpers";
-import { useLogout } from "hooks/useLogout";
+import { usePopulateTasks } from "hooks/usePopulateTasks";
+import { usePopulateEvents } from "hooks/usePopulateEvents";
 
 import styles from "./index.module.scss";
 
@@ -35,22 +36,8 @@ function Tasks() {
   const selectedLabelId = useSelector(getSelectedLabelId);
   const selectedLabel = useSelector(getLabelById(selectedLabelId));
 
-  const logout = useLogout();
-
-  useEffect(() => {
-    populateTasks();
-  }, []);
-
-  async function populateTasks() {
-    try {
-      await dispatch(fetchTasks()).unwrap();
-    } catch (ex) {
-      const { status } = ex;
-      if (status === 400 || status === 401) {
-        return logout();
-      }
-    }
-  }
+  usePopulateTasks(handleSelectTask);
+  usePopulateEvents();
 
   const newTaskId = useRef(1);
   function handleNewTask({ currentTarget }) {

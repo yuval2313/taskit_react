@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { useSelector, useDispatch } from "react-redux";
-import { getUser, fetchUser } from "store/auth";
+import { useSelector } from "react-redux";
+import { getUser } from "store/auth";
 import { isSynced as isTasksSynced } from "store/entities/tasks";
 import { isSynced as isLabelsSynced } from "store/entities/labels";
 
@@ -10,7 +10,7 @@ import SideBar from "./components/SideBar";
 import Sync from "./components/Sync";
 import ProfileMenu from "./components/ProfileMenu";
 
-import { useLogout } from "hooks/useLogout";
+import { usePopulateUser } from "hooks/usePopulateUser";
 
 import styles from "./index.module.scss";
 
@@ -19,23 +19,7 @@ function NavBar() {
   const tasksSynced = useSelector(isTasksSynced);
   const labelsSynced = useSelector(isLabelsSynced);
 
-  const dispatch = useDispatch();
-  const logout = useLogout();
-
-  useEffect(() => {
-    populateUser();
-  }, []);
-
-  async function populateUser() {
-    try {
-      await dispatch(fetchUser()).unwrap();
-    } catch (ex) {
-      const { status } = ex;
-      if (status === 400 || status === 401) {
-        return logout();
-      }
-    }
-  }
+  usePopulateUser();
 
   function isDataSynced() {
     return tasksSynced && labelsSynced;

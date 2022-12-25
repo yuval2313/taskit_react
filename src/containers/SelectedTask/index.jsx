@@ -25,6 +25,7 @@ function SelectedTask({ taskId, startingProperties, forwardedRef }) {
     task
       ? { ...task }
       : {
+          _id: taskId,
           title: "",
           content: "",
           status: "",
@@ -45,7 +46,7 @@ function SelectedTask({ taskId, startingProperties, forwardedRef }) {
 
   useDebounce(handleDebounceSave, 5000, [title, content]);
 
-  useEffect(handleUpdatedAt, [task]);
+  useEffect(handleUpdated, [task]);
 
   function isEmpty() {
     return !title && !content && !status && !priority && !labelIds.length;
@@ -66,9 +67,9 @@ function SelectedTask({ taskId, startingProperties, forwardedRef }) {
       return handleSave({ _id: taskId, title, content });
   }
 
-  function handleUpdatedAt() {
+  function handleUpdated() {
     if (task && task.updatedAt !== updatedAt)
-      return setData({ ...data, updatedAt: task.updatedAt });
+      return setData({ ...data, updatedAt: task.updatedAt, _id: task._id });
   }
 
   function handleChange({ currentTarget }) {
@@ -79,9 +80,10 @@ function SelectedTask({ taskId, startingProperties, forwardedRef }) {
   }
 
   function handleExit() {
-    if ((!isNew() && isEdited()) || (isNew() && !isEmpty())) handleSave(data);
-    else dispatch(setTasksSynced(true));
-    return handleDeselectTask();
+    handleDeselectTask();
+    if ((!isNew() && isEdited()) || (isNew() && !isEmpty()))
+      return handleSave(data);
+    else return dispatch(setTasksSynced(true));
   }
 
   return (

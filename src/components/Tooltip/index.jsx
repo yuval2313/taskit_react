@@ -2,10 +2,10 @@ import React from "react";
 
 import styles from "./index.module.scss";
 
-function Tooltip({ tooltip }) {
+function Tooltip({ tooltip, bottom }) {
   return (
     <div className={styles.container}>
-      <div className={styles.box}>
+      <div className={`${bottom ? styles.box_bottom : styles.box_top}`}>
         {tooltip}
         <span className={styles.arrow}></span>
       </div>

@@ -1,27 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
-import Button from "components/Button";
 import Reminder from "components/Reminder";
+import ReminderForm from "components/ReminderForm";
+import Separator from "components/Separator";
 
-import { faBell } from "@fortawesome/free-solid-svg-icons";
 import styles from "./index.module.scss";
-function EventReminders() {
-  const [reminders, setReminders] = useState([]);
-
-  function addReminder() {
-    const newReminder = {
-      value: 10,
-      unitValue: 1,
-    };
-
+function EventReminders({ reminders, setReminders, disabled }) {
+  function addReminder(newReminder) {
     setReminders([...reminders, newReminder]);
-  }
-
-  function editReminder({ currentTarget }, index) {
-    const { value, name } = currentTarget;
-    const remindersClone = [...reminders];
-    remindersClone[index] = { ...reminders[index], [name]: value };
-    setReminders(remindersClone);
   }
 
   function removeReminder(index) {
@@ -32,14 +18,24 @@ function EventReminders() {
 
   return (
     <div className={styles.container}>
-      {reminders.map((reminder, i) => (
-        <Reminder
-          reminder={reminder}
-          onChange={(e) => editReminder(e, i)}
-          onDelete={() => removeReminder(i)}
-        />
-      ))}
-      <Button leftIcon={faBell} label="Add Reminder" onClick={addReminder} />
+      {reminders.length ? (
+        reminders.map((reminder, i) => (
+          <Reminder
+            key={i}
+            reminder={reminder}
+            onDelete={() => removeReminder(i)}
+            disabled={disabled}
+          />
+        ))
+      ) : (
+        <span className={styles.message}>You can add up to 5 reminders...</span>
+      )}
+      {reminders.length < 5 && !disabled && (
+        <div>
+          <Separator />
+          <ReminderForm onAdd={addReminder} />
+        </div>
+      )}
     </div>
   );
 }
