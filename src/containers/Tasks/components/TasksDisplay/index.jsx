@@ -3,6 +3,7 @@ import React from "react";
 import TasksSelected from "../TasksSelected";
 import TasksGrid from "../TasksGrid";
 import TasksTable from "../TasksTable";
+import TasksPlaceholder from "components/TasksPlaceholder";
 
 import styles from "./index.module.scss";
 
@@ -20,9 +21,15 @@ function TasksDisplay({
   function isTableView() {
     return view === "table";
   }
+  function noTasks() {
+    return !tasks.length;
+  }
 
   return (
     <div className={styles.container}>
+      <TasksPlaceholder
+        className={`${styles.placeholder} ${noTasks() ? styles.active : ""}`}
+      />
       <div className={styles.display}>
         <TasksSelected
           selectedTaskId={selectedTaskId}

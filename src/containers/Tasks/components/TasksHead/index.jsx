@@ -16,6 +16,7 @@ function TasksHead({
   view,
   tableSort,
   selectedLabel,
+  noTasks,
   onSearch,
   onSortBy,
   onToggleSortOrder,
@@ -40,6 +41,7 @@ function TasksHead({
         <SetView
           view={view}
           tableSort={tableSort}
+          noTasks={noTasks}
           onToggleView={onToggleView}
           onToggleTableSort={onToggleTableSort}
         />

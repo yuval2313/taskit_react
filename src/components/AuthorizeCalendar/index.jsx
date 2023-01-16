@@ -13,7 +13,7 @@ function AuthorizeCalendar({ authorized, requestCalendarAccess }) {
         tooltipBottom="Enable Calendar Support"
       >
         <span className={styles.gcal}>
-          <GcalLogo />
+          <GcalLogo className={styles.logo} />
         </span>
       </Button>
     )

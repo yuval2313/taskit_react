@@ -12,7 +12,9 @@ export async function loginUser(credential) {
 
 export function loginUserWithJwt(jwt) {
   try {
+    http.setJwt(jwt);
     localStorage.setItem(tokenKey, jwt);
+
     return jwtDecode(jwt);
   } catch (ex) {
     return null;

@@ -1,6 +1,7 @@
 import axios from "axios";
+import logger from "./logService";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+axios.defaults.baseURL = process.env.REACT_APP_API_URL + "/api";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -9,9 +10,7 @@ axios.interceptors.response.use(null, (error) => {
     error.response.status < 500;
 
   if (!expectedError) {
-    //FIXME: Use logging service (such as Sentry)
-    console.log(error);
-    //FIXME: Use better notifications (such as toast npm)
+    logger.log(error);
     alert("An unexpected error has occured :(");
   }
 

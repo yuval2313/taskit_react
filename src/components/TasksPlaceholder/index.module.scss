@@ -1,0 +1,15 @@
+@use "styles/themes/colors";
+
+.container {
+  text-align: center;
+
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #555;
+
+  .icon {
+    color: map-get(colors.$colors-primary, "blue");
+    color: map-get(colors.$gradients, "blue");
+  }
+}

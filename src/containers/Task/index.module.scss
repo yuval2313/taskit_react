@@ -19,7 +19,7 @@
   }
 
   &.selected {
-    width: 100%;
+    width: 95%;
     max-width: 60ch;
     cursor: initial;
   }
@@ -38,7 +38,7 @@
 
 @media screen and (max-width: 680px) {
   .task {
-    width: 100%;
+    width: 95%;
     max-width: 45ch;
   }
 }

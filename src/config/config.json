@@ -1,0 +1,6 @@
+{
+  "GOOGLE_API_SCOPES": {
+    "GCAL": "https://www.googleapis.com/auth/calendar",
+    "USER": "https://www.googleapis.com/auth/userinfo.profile"
+  }
+}

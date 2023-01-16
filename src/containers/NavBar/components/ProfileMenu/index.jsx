@@ -46,7 +46,7 @@ function ProfileMenu({ user }) {
             <span className={styles.picture}>
               <img
                 src={user.picture}
-                alt="Your profile picture"
+                alt="Your profile"
                 referrerPolicy="same-origin"
               />
             </span>

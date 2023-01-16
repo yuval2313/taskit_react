@@ -81,3 +81,18 @@
     }
   }
 }
+
+@media screen and (max-width: 350px) {
+  .container {
+    .profile {
+      width: 150px;
+
+      .picture {
+        img {
+          height: 60px;
+          width: 60px;
+        }
+      }
+    }
+  }
+}

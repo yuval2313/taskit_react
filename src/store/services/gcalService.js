@@ -1,6 +1,6 @@
 import http from "./httpService";
 
-const apiEndpoint = process.env.REACT_APP_API_GCAL;
+const apiEndpoint = "/gcal";
 
 function eventUrl(eventId) {
   return `${apiEndpoint}/${eventId}`;
@@ -35,7 +35,7 @@ function mapToBody(event) {
     event;
   return {
     summary,
-    description: `${description}\n\n${process.env.REACT_APP_URL}/tasks/${taskId}`,
+    description: `Added via Task-it: ${process.env.REACT_APP_URL}/tasks/${taskId}\n\n${description}`,
     start: { dateTime: new Date(start) },
     end: { dateTime: new Date(end) },
     reminders: reminders.length

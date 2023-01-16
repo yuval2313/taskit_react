@@ -1,8 +1,12 @@
-@use "styles/themes/colors";
 @use "containers/NavBar/index.module.scss" as navbar;
+@use "styles/themes/backgrounds";
 
 body {
-  background: map-get(colors.$colors-primary, "white");
+  background-color: #f0f0f0;
+  background-image: backgrounds.$mountains;
+  background-attachment: fixed;
+  background-size: cover;
+
   margin: 0;
   padding-top: navbar.$nav-height;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -50,4 +54,10 @@ code {
 }
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0);
+}
+
+@media screen and (max-width: 350px) {
+  html {
+    font-size: 75%;
+  }
 }

@@ -9,3 +9,11 @@
     height: calc(100vh - 256px);
   }
 }
+
+@media screen and (max-width: 350px) {
+  .container {
+    .loading {
+      height: calc((100vh - 180px));
+    }
+  }
+}

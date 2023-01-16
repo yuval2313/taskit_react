@@ -76,7 +76,7 @@ const slice = createSlice({
       .addCase(authorizeUser.rejected, (state, action) => {
         const { status, data } = action.payload;
         if (status === 400)
-          alert(`${data}: Please choose your own account for authorization`);
+          alert(`${data} \nPlease choose your own account for authorization`);
         state.authorized = false;
       })
 

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { isLoggedIn } from "store/auth";
+import { useGlobalGoogle } from "hooks/useGlobalGoogle";
 
 import Main from "layout/Main";
 import Login from "layout/Login";
@@ -10,6 +11,7 @@ import NotFound from "layout/NotFound";
 import ProtectedRoute from "components/ProtectedRoute";
 
 function App() {
+  useGlobalGoogle();
   const loggedIn = useSelector(isLoggedIn);
 
   return (
@@ -18,7 +20,7 @@ function App() {
         <Route
           path="/tasks"
           element={
-            <ProtectedRoute loggedIn={!!loggedIn}>
+            <ProtectedRoute loggedIn={loggedIn}>
               <Main />
             </ProtectedRoute>
           }
@@ -26,7 +28,7 @@ function App() {
         <Route
           path="/tasks/:_id"
           element={
-            <ProtectedRoute loggedIn={!!loggedIn}>
+            <ProtectedRoute loggedIn={loggedIn}>
               <Main />
             </ProtectedRoute>
           }

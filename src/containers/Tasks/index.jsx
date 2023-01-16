@@ -110,6 +110,7 @@ function Tasks() {
           view={view}
           tableSort={tableSort}
           selectedLabel={selectedLabel}
+          noTasks={!getData().length}
           onSearch={handleSearch}
           onSortBy={handleSortBy}
           onToggleSortOrder={handleToggleSortOrder}

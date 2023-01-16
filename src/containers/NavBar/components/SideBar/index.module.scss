@@ -9,10 +9,9 @@ $transition-duration: 0.3s;
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin: 0 1.2rem;
 
     position: relative;
-    right: calc(100% - 3.2rem);
+    right: calc(100% - 2rem);
     transition: $transition-duration;
     &.active {
       right: 0;
@@ -39,6 +38,16 @@ $transition-duration: 0.3s;
     &.active {
       left: 0;
       transition: left $transition-duration;
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .sidebar {
+    .toggler {
+      .toggler_label {
+        display: none;
+      }
     }
   }
 }

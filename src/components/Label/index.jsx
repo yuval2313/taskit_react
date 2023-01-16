@@ -24,12 +24,17 @@ function Label({ label, onDelete, onUpdate, hovering }) {
 
   async function handleDelete(e) {
     e.stopPropagation();
-    setDeleting(true);
+    const confirmation = window.confirm(
+      "Are you sure? \nDeleting this label will remove it from all corresponding tasks."
+    );
 
-    try {
-      await onDelete(label._id).unwrap();
-    } catch (ex) {
-      setDeleting(false);
+    if (confirmation) {
+      setDeleting(true);
+      try {
+        await onDelete(label._id).unwrap();
+      } catch (ex) {
+        setDeleting(false);
+      }
     }
   }
 

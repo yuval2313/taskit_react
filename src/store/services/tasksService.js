@@ -1,6 +1,6 @@
 import http from "./httpService";
 
-const apiEndpoint = process.env.REACT_APP_API_TASKS;
+const apiEndpoint = "/tasks";
 
 function taskUrl(taskId) {
   return `${apiEndpoint}/${taskId}`;
