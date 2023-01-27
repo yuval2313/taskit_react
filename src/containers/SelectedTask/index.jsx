@@ -52,7 +52,7 @@ function SelectedTask({ taskId, startingProperties, forwardedRef }) {
     return !title && !content && !status && !priority && !labelIds.length;
   }
   function isNew() {
-    return task ? false : true;
+    return task && task.updatedAt ? false : true;
   }
   function isEdited() {
     return !_.isEqual(task, data);
@@ -68,7 +68,7 @@ function SelectedTask({ taskId, startingProperties, forwardedRef }) {
   }
 
   function handleUpdated() {
-    if (task && task.updatedAt !== updatedAt)
+    if (!isNew() && task.updatedAt !== updatedAt)
       return setData({ ...data, updatedAt: task.updatedAt, _id: task._id });
   }
 

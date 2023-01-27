@@ -1,7 +1,7 @@
 import axios from "axios";
 import logger from "./logService";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_URL + "/api";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =

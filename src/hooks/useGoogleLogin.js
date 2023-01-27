@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useDispatch } from "react-redux";
+import { useGlobalGoogle } from "hooks/useGlobalGoogle";
 
 import { loginUser } from "store/auth";
 
@@ -11,7 +12,8 @@ function useGoogleLogin() {
   }
 
   const buttonRef = useRef();
-  useEffect(() => {
+
+  function initialize() {
     /* global google */
     google.accounts.id.initialize({
       client_id: process.env.REACT_APP_OAUTH_CLIENT_ID,
@@ -21,7 +23,9 @@ function useGoogleLogin() {
     google.accounts.id.renderButton(buttonRef.current, {
       theme: "filled_blue",
     });
-  }, []);
+  }
+
+  useGlobalGoogle(initialize);
 
   return buttonRef;
 }

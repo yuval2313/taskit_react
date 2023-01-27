@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useGlobalGoogle } from "hooks/useGlobalGoogle";
 import config from "config/config.json";
 
 function useGoogleAuthentication(callback) {
   const [tokenClient, setTokenClient] = useState({});
 
-  useEffect(() => {
+  function initialize() {
     /* global google */
     setTokenClient(
       google.accounts.oauth2.initCodeClient({
@@ -19,7 +20,9 @@ function useGoogleAuthentication(callback) {
         },
       })
     );
-  }, []);
+  }
+
+  useGlobalGoogle(initialize);
 
   return tokenClient;
 }

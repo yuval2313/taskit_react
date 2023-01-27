@@ -1,17 +1,13 @@
 import { useEffect } from "react";
 
-const google = window.google;
-
-function useGlobalGoogle() {
-  function refreshPage() {
-    window.location.reload(false);
-  }
-
+function useGlobalGoogle(callback) {
   useEffect(() => {
-    if (!google) refreshPage();
-  });
+    const googleScript = document.getElementById("global-google-script");
 
-  return google;
+    if (window.google) callback();
+
+    googleScript.addEventListener("load", callback);
+  }, []);
 }
 
 export { useGlobalGoogle };
