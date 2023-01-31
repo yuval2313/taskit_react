@@ -28,7 +28,7 @@ Make sure you also have NPM version 8.1.2.
 
 ### Install dependencies 
 ```bash
-\taskit_react> npm install
+npm install
 ```
 Requires [server side](https://github.com/yuval2313/taskit_node) to be set up and running!
 
