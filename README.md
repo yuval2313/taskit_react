@@ -27,6 +27,9 @@ This app runs on node version 16.13.1.\
 Make sure you also have NPM version 8.1.2.
 
 ### Install dependencies 
+
+In the project directory run:
+
 ```bash
 npm install
 ```
